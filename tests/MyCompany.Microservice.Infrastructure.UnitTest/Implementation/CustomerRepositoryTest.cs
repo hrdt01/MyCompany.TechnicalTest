@@ -189,7 +189,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task GetRentedVehicleByIdAndCustomerIdTest()
         {
             // Arrange
-            TestDbContext.SeedDataToReturnRentedVehicle();
+            TestDbContext.SeedDataToGetRentedVehicleByIdAndCustomerId();
             var repositoryInstance = new CustomerRepository(
                 _testDbContext!,
                 testRentedVehicleEntityFactory,
@@ -197,7 +197,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 
             // Act
             var result = await repositoryInstance.GetRentedVehicleByIdAndCustomerId(
-                BaseTestConstants.RentedVehicleIdToReturnTest,
+                BaseTestConstants.RentedVehicleIdTest2,
                 BaseTestConstants.CustomerIdTest);
 
             // Assert
