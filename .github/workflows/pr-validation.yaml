@@ -1,6 +1,8 @@
 name: 'Pipeline for CI'
 
 on:
+  pull_request:
+    branches: [ master ]
   push:
     branches:
       - feature/*
