@@ -6,11 +6,17 @@ on:
       - feature/*
 
 env:
-  DOTNET_VERSION: 8.0.x
-  BUILD_CONFIGURATION: Release
+  DOTNET_VERSION: '8.0.x'
+  BUILD_CONFIGURATION: 'Release'
   SOLUTION_BASEPATH: '${{ github.workspace }}/*.sln'
 
 jobs:
+  env-vars:
+    name: Check environment variables
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'WTF'
+
   call-restore-and-build:
     uses: ./.github/workflows/templates/dotnet-build.yaml
     with:
