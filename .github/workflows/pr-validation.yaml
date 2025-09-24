@@ -4,37 +4,11 @@ on:
   push:
     branches:
       - feature/*
-  workflow_dispatch:
-    # Defaults here are for worflow_dispatch only, all other events are set in EnvSetup.setup-output-defaults:
-    inputs:
-      DOTNET_VERSION:
-        required: true
-        default: '8.0.x'    
-      BUILD_CONFIGURATION:
-        required: true
-        default: 'Release'    
-      SOLUTION_BASEPATH:
-        required: true
-        default: 
 jobs:
-  EnvSetup:
-    name: Setup Dynamic Environment Variables
-    runs-on: ubuntu-latest
-    outputs:
-      dotnet_version: ${{ steps.set-output-defaults.outputs.DOTNET_VERSION }}
-      build_configuration: ${{ steps.set-output-defaults.outputs.BUILD_CONFIGURATION }}
-    steps:
-      - name: set outputs with default values
-        id: set-output-defaults
-        run: |
-          echo "DOTNET_VERSION=${{ github.event.inputs.DOTNET_VERSION }}" >> $GITHUB_OUTPUT
-          echo "BUILD_CONFIGURATION=${{ github.event.inputs.BUILD_CONFIGURATION }}" >> $GITHUB_OUTPUT
-
   call-restore-and-build:
-    needs: [EnvSetup]
     name: Invoke build solution
     uses: ./.github/workflows/dotnet-build.yaml
     with:
-      solution-path: ${{ github.workspace }}/*.sln
-      build-configuration: ${{needs.EnvSetup.outputs.build_configuration}}
-      dotnet_version: ${{needs.EnvSetup.outputs.dotnet_version}}
+      solution-path: ${{ github.workspace }}/**.sln
+      build-configuration: 'Release'
+      dotnet_version: '8.0.x'
