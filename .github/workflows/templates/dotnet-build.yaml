@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+    inputs:
+      solution-path:
+        required: true
+        type: string
+      build-configuration:
+        required: true
+        type: string
+      dotnet_version:
+        required: true
+        type: string
+jobs:
+  build_solution:
+    name: 'Build solution'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Setup .NET version
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+    
+    - name: Install dependencies
+      run: dotnet restore ${{ inputs.solution-path }}
+
+    - name: Build
+      run: dotnet build ${{ inputs.solution-path }} --configuration ${{ inputs.build-configuration }} --no-restore

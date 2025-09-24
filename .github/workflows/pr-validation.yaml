@@ -1,0 +1,19 @@
+name: 'Pipeline for CI'
+
+on:
+  push:
+    branches:
+      - feature/*
+
+env:
+  DOTNET_VERSION: 8.0.x
+  BUILD_CONFIGURATION: Release
+  SOLUTION_BASEPATH: '${{ github.workspace }}/*.sln'
+
+jobs:
+  call-restore-and-build:
+    uses: ./.github/workflows/templates/dotnet-build.yaml
+    with:
+      solution-path: ${{ env.SOLUTION_BASEPATH }}
+      build-configuration: ${{ env.BUILD_CONFIGURATION }}
+      dotnet_version: ${{ env.DOTNET_VERSION }}
