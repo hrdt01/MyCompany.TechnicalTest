@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+      <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.15.0.120848">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.0.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+      <PackageReference Include="MediatR" Version="13.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MyCompany.Microservice.Services\MyCompany.Microservice.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\Validators\" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="MyCompany.Microservice.Application.UnitTest" />
+    </ItemGroup>
+</Project>
