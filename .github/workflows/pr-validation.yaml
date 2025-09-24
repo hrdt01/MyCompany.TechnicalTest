@@ -27,13 +27,14 @@ jobs:
       - name: set outputs with default values
         id: set-output-defaults
         run: |
-          echo "::set-output name=dotnet_version::${{ github.event.inputs.DOTNET_VERSION }}"
-          echo "::set-output name=build_configuration::${{ github.event.inputs.BUILD_CONFIGURATION }}"
+          echo "DOTNET_VERSION=${{ github.event.inputs.DOTNET_VERSION }}" >> $GITHUB_OUTPUT
+          echo "BUILD_CONFIGURATION=${{ github.event.inputs.BUILD_CONFIGURATION }}" >> $GITHUB_OUTPUT
 
   call-restore-and-build:
     needs: [EnvSetup]
+    name: Invoke build solution
     uses: ./.github/workflows/dotnet-build.yaml
     with:
-      solution-path: '${{ github.workspace }}/*.sln'
+      solution-path: ${{ github.workspace }}/*.sln
       build-configuration: ${{needs.EnvSetup.outputs.build_configuration}}
       dotnet_version: ${{needs.EnvSetup.outputs.dotnet_version}}
