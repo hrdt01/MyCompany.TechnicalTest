@@ -37,8 +37,4 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="cd $(TargetDir)&#xD;&#xA;docker rm -f gtmotive-hector-romero&#xD;&#xA;docker build -t gtmotive-hector-romero-release:latest -f Dockerfile .&#xD;&#xA;docker run -d -p 1000:8080 --name gtmotive-hector-romero gtmotive-hector-romero-release:latest&#xD;&#xA;ping localhost /n 10&#xD;&#xA;start microsoft-edge:http://localhost:1000/swagger" />
-  </Target>
-
 </Project>
