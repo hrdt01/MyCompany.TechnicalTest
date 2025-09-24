@@ -11,29 +11,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Domain", "src\GtMotive.Estimate.Microservice.Domain\GtMotive.Estimate.Microservice.Domain.csproj", "{1E26DDB9-661D-444D-B31D-4C1DA11B4BC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Domain", "src\MyCompany.Microservice.Domain\MyCompany.Microservice.Domain.csproj", "{1E26DDB9-661D-444D-B31D-4C1DA11B4BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Infrastructure", "src\GtMotive.Estimate.Microservice.Infrastructure\GtMotive.Estimate.Microservice.Infrastructure.csproj", "{438E22AF-2A12-4979-9096-7912A793F374}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Infrastructure", "src\MyCompany.Microservice.Infrastructure\MyCompany.Microservice.Infrastructure.csproj", "{438E22AF-2A12-4979-9096-7912A793F374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Services", "src\GtMotive.Estimate.Microservice.Services\GtMotive.Estimate.Microservice.Services.csproj", "{6C360856-9CC8-42C1-A93D-8900CC689016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Services", "src\MyCompany.Microservice.Services\MyCompany.Microservice.Services.csproj", "{6C360856-9CC8-42C1-A93D-8900CC689016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Application", "src\GtMotive.Estimate.Microservice.ApplicationCore\GtMotive.Estimate.Microservice.Application.csproj", "{1636EE05-6A9C-4043-BB02-47A718D0AF14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Application", "src\MyCompany.Microservice.ApplicationCore\MyCompany.Microservice.Application.csproj", "{1636EE05-6A9C-4043-BB02-47A718D0AF14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Api", "src\GtMotive.Estimate.Microservice.Api\GtMotive.Estimate.Microservice.Api.csproj", "{800FBF7D-014C-4551-A074-C52656EEB4C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Api", "src\MyCompany.Microservice.Api\MyCompany.Microservice.Api.csproj", "{800FBF7D-014C-4551-A074-C52656EEB4C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Domain.UnitTest", "tests\GtMotive.Estimate.Microservice.Domain.UnitTest\GtMotive.Estimate.Microservice.Domain.UnitTest.csproj", "{4934E2E3-DF6E-40FA-A468-2B7656A2DD94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Domain.UnitTest", "tests\MyCompany.Microservice.Domain.UnitTest\MyCompany.Microservice.Domain.UnitTest.csproj", "{4934E2E3-DF6E-40FA-A468-2B7656A2DD94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Infrastructure.UnitTest", "tests\GtMotive.Estimate.Microservice.Infrastructure.UnitTest\GtMotive.Estimate.Microservice.Infrastructure.UnitTest.csproj", "{2D55EA70-41D1-4D10-A848-64FFE5EA11A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Infrastructure.UnitTest", "tests\MyCompany.Microservice.Infrastructure.UnitTest\MyCompany.Microservice.Infrastructure.UnitTest.csproj", "{2D55EA70-41D1-4D10-A848-64FFE5EA11A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.BaseTest", "tests\GtMotive.Estimate.Microservice.BaseTest\GtMotive.Estimate.Microservice.BaseTest.csproj", "{9F652783-1337-403D-BF03-612F2269A44C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.BaseTest", "tests\MyCompany.Microservice.BaseTest\MyCompany.Microservice.BaseTest.csproj", "{9F652783-1337-403D-BF03-612F2269A44C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Services.UnitTest", "tests\GtMotive.Estimate.Microservice.Services.UnitTest\GtMotive.Estimate.Microservice.Services.UnitTest.csproj", "{1C913101-A8EF-4C1F-BD3D-01C74D6E5D5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Services.UnitTest", "tests\MyCompany.Microservice.Services.UnitTest\MyCompany.Microservice.Services.UnitTest.csproj", "{1C913101-A8EF-4C1F-BD3D-01C74D6E5D5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Application.UnitTest", "tests\GtMotive.Estimate.Microservice.Application.UnitTest\GtMotive.Estimate.Microservice.Application.UnitTest.csproj", "{F3F9DDFB-DBBF-4B29-BBD4-DD78D71B075A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Application.UnitTest", "tests\MyCompany.Microservice.Application.UnitTest\MyCompany.Microservice.Application.UnitTest.csproj", "{F3F9DDFB-DBBF-4B29-BBD4-DD78D71B075A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Api.UnitTest", "tests\GtMotive.Estimate.Microservice.Api.UnitTest\GtMotive.Estimate.Microservice.Api.UnitTest.csproj", "{0CB2C0B3-1CE2-4624-92E3-C88F0D26892C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCompany.Microservice.Api.UnitTest", "tests\MyCompany.Microservice.Api.UnitTest\MyCompany.Microservice.Api.UnitTest.csproj", "{0CB2C0B3-1CE2-4624-92E3-C88F0D26892C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
