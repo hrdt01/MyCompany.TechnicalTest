@@ -32,7 +32,7 @@ jobs:
 
   call-restore-and-build:
     needs: [EnvSetup]
-    uses: ./.github/workflows/templates/dotnet-build.yaml
+    uses: ./.github/workflows/dotnet-build.yaml
     with:
       solution-path: '${{ github.workspace }}/*.sln'
       build-configuration: ${{needs.EnvSetup.outputs.build_configuration}}
