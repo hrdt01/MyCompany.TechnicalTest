@@ -9,6 +9,6 @@ jobs:
     name: Invoke build solution
     uses: ./.github/workflows/dotnet-build.yaml
     with:
-      solution-path: ${{ github.workspace }}/TechnicalTest.HectorRomero.sln
+      solution-path: TechnicalTest.HectorRomero.sln
       build-configuration: 'Release'
       dotnet_version: '8.0.x'
