@@ -140,6 +140,55 @@ namespace MyCompany.Microservice.BaseTest.TestHelpers
                 CustomerId = initialCustomer.CustomerId,
                 RentStartedOn = BaseTestConstants.RentStartedOn,
                 RentFinishedOn = BaseTestConstants.RentFinishedOn,
+                RentedVehicleId = BaseTestConstants.RentedVehicleIdToReturnTest
+            };
+#pragma warning disable IDE0028
+            initialFleet.FleetVehicles = new List<FleetVehicle> { initialFleetVehicle };
+#pragma warning restore IDE0028
+
+            using var testDbConnection = CreateSqliteTestConnection();
+            using var testDbContext = CreateContext<FleetContext>(testDbConnection);
+            testDbContext!.Customers.Add(initialCustomer);
+            testDbContext.Vehicles.Add(initialVehicle);
+            testDbContext.Fleet.Add(initialFleet);
+            testDbContext.RentedVehicles.Add(initialRentedVehicle);
+            testDbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Seeding minimum data to return rented vehicle.
+        /// </summary>
+        public static void SeedDataToGetRentedVehicle()
+        {
+            var initialCustomer = new Customer
+            {
+                CustomerName = BaseTestConstants.CustomerNameTest,
+                CustomerId = BaseTestConstants.CustomerIdTest
+            };
+            var initialFleet = new Fleet
+            {
+                FleetName = BaseTestConstants.FleetNameTest,
+                FleetId = BaseTestConstants.FleetIdTest
+            };
+            var initialVehicle = new Vehicle
+            {
+                Brand = BaseTestConstants.BrandNameTest,
+                Model = BaseTestConstants.ModelNameTest,
+                ManufacturedOn = BaseTestConstants.ManufacturedOnTest,
+                VehicleId = BaseTestConstants.VehicleIdTest
+            };
+            var initialFleetVehicle = new FleetVehicle
+            {
+                FleetId = initialFleet.FleetId,
+                VehicleId = initialVehicle.VehicleId
+            };
+            var initialRentedVehicle = new RentedVehicle
+            {
+                FleetId = initialFleet.FleetId,
+                VehicleId = initialVehicle.VehicleId,
+                CustomerId = initialCustomer.CustomerId,
+                RentStartedOn = BaseTestConstants.RentStartedOn,
+                RentFinishedOn = BaseTestConstants.RentFinishedOn,
                 RentedVehicleId = BaseTestConstants.RentedVehicleIdTest
             };
 #pragma warning disable IDE0028

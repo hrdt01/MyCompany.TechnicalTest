@@ -61,6 +61,11 @@
         public static Guid RentedVehicleIdTest => Guid.Parse("B435B674-08FA-4DF0-8FCF-D1F8485E10DC");
 
         /// <summary>
+        /// Gets a generic RentedVehicleId.
+        /// </summary>
+        public static Guid RentedVehicleIdToReturnTest => Guid.Parse("B276B674-08FA-4DF0-8FCF-D1F8485E10DC");
+
+        /// <summary>
         /// Gets a generic ManufacturedOn value.
         /// </summary>
         public static DateTime ManufacturedOnTest => Moment.AddYears(-1);
