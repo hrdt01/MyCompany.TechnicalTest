@@ -12,3 +12,11 @@ jobs:
       solution-path: TechnicalTest.HectorRomero.sln
       build-configuration: 'Release'
       dotnet_version: '8.0.x'
+      
+  call-test:
+    name: Invoke solution test
+    uses: ./.github/workflows/dotnet-test.yaml
+    with:
+      solution-path: TechnicalTest.HectorRomero.sln
+      build-configuration: 'Release'
+      dotnet_version: '8.0.x'

@@ -1,0 +1,39 @@
+on:
+  workflow_call:
+    inputs:
+      solution-path:
+        required: true
+        type: string
+      build-configuration:
+        required: true
+        type: string
+      dotnet_version:
+        required: true
+        type: string
+jobs:
+  build_solution:
+    name: 'Build solution'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Setup .NET version
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+    
+    - name: Install dependencies
+      run: dotnet restore ${{ inputs.solution-path }}
+
+    - name: Test
+      run: dotnet test --configuration Release --collect:"XPlat Code Coverage" --no-build --verbosity minimal --logger trx
+    
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()            # run this step even if previous step failed
+      with:
+        name: Test results           # Name of the check run which will be created
+        path: tests/**/TestResults/*.trx    # Path to test results
+        reporter: dotnet-trx                # Format of test results
+        list-tests: failed                  # Only list failed tests vs all tests
+  
