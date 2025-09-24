@@ -15,6 +15,7 @@ jobs:
       
   call-test:
     name: Invoke solution test
+    needs: [call-restore-and-build]
     uses: ./.github/workflows/dotnet-test.yaml
     with:
       solution-path: TechnicalTest.HectorRomero.sln
