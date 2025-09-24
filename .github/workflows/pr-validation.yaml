@@ -1,0 +1,31 @@
+name: 'Pipeline for CI'
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches:
+      - feature/*
+jobs:
+  call-restore-and-build:
+    name: Invoke build solution
+    uses: ./.github/workflows/dotnet-build.yaml
+    with:
+      solution-path: TechnicalTest.HectorRomero.sln
+      build-configuration: 'Release'
+      dotnet_version: '8.0.x'
+      
+  call-test:
+    name: Invoke solution test
+    needs: [call-restore-and-build]
+    uses: ./.github/workflows/dotnet-test.yaml
+    with:
+      solution-path: TechnicalTest.HectorRomero.sln
+      build-configuration: 'Release'
+      dotnet_version: '8.0.x'
+  
+#   code-scan:
+#     name: Invoke scan solution
+#     needs: [call-test]
+#     uses: ./.github/workflows/dotnet-security.yaml
+    
