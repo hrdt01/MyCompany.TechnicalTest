@@ -63,12 +63,12 @@ namespace MyCompany.Microservice.BaseTest.TestHelpers
         {
             using var testDbConnection = CreateSqliteTestConnection();
             using var testDbContext = CreateContext<FleetContext>(testDbConnection);
+            testDbContext!.Customers.RemoveRange(
+                testDbContext.Customers.Where(customer => customer.CustomerName == BaseTestConstants.CustomerNameTest));
             testDbContext!.Vehicles.RemoveRange(
                 testDbContext.Vehicles.Where(vehicle => vehicle.VehicleId == BaseTestConstants.VehicleIdTest));
             testDbContext.Fleet.RemoveRange(
                 testDbContext.Fleet.Where(fleet => fleet.FleetName == BaseTestConstants.FleetNameTest));
-            testDbContext.Customers.RemoveRange(
-                testDbContext.Customers.Where(customer => customer.CustomerName == BaseTestConstants.CustomerNameTest));
 
             testDbContext.SaveChanges();
         }
