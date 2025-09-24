@@ -19,7 +19,7 @@ on:
 jobs:
   EnvSetup:
     name: Setup Dynamic Environment Variables
-    runs-on: ubunut-latest
+    runs-on: ubuntu-latest
     outputs:
       dotnet_version: ${{ steps.set-output-defaults.outputs.DOTNET_VERSION }}
       build_configuration: ${{ steps.set-output-defaults.outputs.BUILD_CONFIGURATION }}
