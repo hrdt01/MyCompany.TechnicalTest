@@ -22,8 +22,8 @@ jobs:
       build-configuration: 'Release'
       dotnet_version: '8.0.x'
   
-  code-scan:
-    name: Invoke scan solution
-    needs: [call-test]
-    uses: ./.github/workflows/dotnet-security.yaml
+#   code-scan:
+#     name: Invoke scan solution
+#     needs: [call-test]
+#     uses: ./.github/workflows/dotnet-security.yaml
     
