@@ -30,4 +30,7 @@ jobs:
     uses: ./.github/workflows/dotnet-security.yaml
     with:
       codeql-execution: false
+      sbom-generation: true
+      target-project-path: ./src/MyCompany.Microservice.Api/MyCompany.Microservice.Api.csproj
+      sbom-filename: MyCompany.Microservice.Api.sbom.json
     

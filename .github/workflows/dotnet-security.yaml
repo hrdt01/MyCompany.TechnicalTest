@@ -5,6 +5,18 @@ on:
         required: true
         type: boolean
         default: false
+      sbom-generation:
+        required: true
+        type: boolean
+        default: false
+      target-project-path:
+        required: false
+        type: string
+        default: ''
+      sbom-filename:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   security-scan:
@@ -23,3 +35,9 @@ jobs:
       - name: Perform CodeQL Analysis
         if: ${{ inputs.codeql-execution == true }}
         uses: github/codeql-action/analyze@v2
+ 
+      - name: Generate JSON SBOM
+        if: ${{ inputs.sbom-generation == true && inputs.target-project-path != '' && inputs.sbom-filename != '' }}
+        run: |
+          dotnet tool update --global CycloneDX
+          dotnet-CycloneDX ${{ inputs.target-project-path }} --output-format json --exclude-test-projects --recursive --output ${{ github.workspace }}/artifacts/sboms --filename ${{ inputs.sbom-filename }}
