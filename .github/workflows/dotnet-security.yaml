@@ -41,3 +41,10 @@ jobs:
         run: |
           dotnet tool update --global CycloneDX
           dotnet-CycloneDX ${{ inputs.target-project-path }} --output-format json --exclude-test-projects --recursive --output ${{ github.workspace }}/artifacts/sboms --filename ${{ inputs.sbom-filename }}
+       
+      - name: Upload Generated SBOM File
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.sbom-filename }}
+          path: ${{ github.workspace }}/artifacts/sboms/${{ inputs.sbom-filename }}
+          retention-days: 5
