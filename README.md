@@ -1,4 +1,4 @@
-````markdown name=README.md
+
 # MyCompany.TechnicalTest
 
 ## Overview
@@ -129,4 +129,3 @@ Intended for demonstration and educational use. Check the repository root for a 
 ## AI assistance disclosure
 
 This README file (README.md) was generated with assistance from an AI tool. Only this README file was created using AI help; all other files and code in the repository were implemented by the project authors.
-````
