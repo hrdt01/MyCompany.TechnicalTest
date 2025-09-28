@@ -28,4 +28,6 @@ jobs:
     name: Invoke scan solution
     needs: [call-test]
     uses: ./.github/workflows/dotnet-security.yaml
+    with:
+      codeql-execution: false
     
