@@ -9,13 +9,12 @@ using MyCompany.Microservice.BaseTest.TestHelpers;
 namespace MyCompany.Microservice.Api.UnitTest.Fleet
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FleetTest"/> class.
+    /// Test class for Fleet related test cases.
     /// </summary>
     [TestFixture]
     public class FleetTest
     {
-        private WebApplicationFixture _factory;
-        private HttpClient _client;
+        private IntegrationTestWebApplicationFactory _factory;
 
         /// <summary>
         /// Method to allocate resources.
@@ -23,7 +22,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _factory = new WebApplicationFixture();
+            _factory = new IntegrationTestWebApplicationFactory();
         }
 
         /// <summary>
@@ -33,24 +32,6 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
         public void OneTimeTearDown()
         {
             _factory.Dispose();
-        }
-
-        /// <summary>
-        /// Method to allocate resources.
-        /// </summary>
-        [SetUp]
-        public void Setup()
-        {
-            _client = _factory.CreateClient();
-        }
-
-        /// <summary>
-        /// Method to free resources.
-        /// </summary>
-        [TearDown]
-        public void TearDown()
-        {
-            _client.Dispose();
         }
 
         /// <summary>
@@ -66,7 +47,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                     .Replace("{fleetId}", BaseTestConstants.FleetIdTest.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
             // Act
-            var result = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var result = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
 
             // Assert
             Assert.That(result.IsSuccessStatusCode, Is.False);
@@ -85,7 +66,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                 FleetName = BaseTestConstants.FleetNameTest
             };
             var newFleetEndpoint = UseCasesEndpoints.NewFleetEndpoint;
-            var newFleetResponse = await _client.PostAsJsonAsync(
+            var newFleetResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newFleetEndpoint, UriKind.Relative),
                 newFleetModel);
             var newFleetResult = await newFleetResponse.Content.ReadFromJsonAsync<CreateNewFleetResponse>();
@@ -95,7 +76,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                     .Replace("{fleetId}", newFleetResult!.Fleet!.FleetId.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
             // Act
-            var resultResponse = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var resultResponse = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
             var result = await resultResponse.Content.ReadFromJsonAsync<GetAvailableVehiclesInFleetResponse>();
 
             // Assert
@@ -120,7 +101,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                 FleetName = BaseTestConstants.FleetNameTest
             };
             var newFleetEndpoint = UseCasesEndpoints.NewFleetEndpoint;
-            var newFleetResponse = await _client.PostAsJsonAsync(
+            var newFleetResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newFleetEndpoint, UriKind.Relative),
                 newFleetModel);
             var newFleetResult = await newFleetResponse.Content.ReadFromJsonAsync<CreateNewFleetResponse>();
@@ -133,7 +114,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
             var addNewVehicleEndpoint = UseCasesEndpoints.AddNewVehicleEndpoint;
-            var addNewVehicleResponse = await _client.PostAsJsonAsync(
+            var addNewVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(addNewVehicleEndpoint, UriKind.Relative),
                 newVehicleModel);
             var addNewVehicleResult = await addNewVehicleResponse.Content.ReadFromJsonAsync<AddNewVehicleToFleetResponse>();
@@ -143,7 +124,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Fleet
                     .Replace("{fleetId}", newFleetResult.Fleet!.FleetId.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
             // Act
-            var resultResponse = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var resultResponse = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
             var result = await resultResponse.Content.ReadFromJsonAsync<GetAvailableVehiclesInFleetResponse>();
 
             // Assert

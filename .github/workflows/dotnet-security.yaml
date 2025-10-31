@@ -35,7 +35,7 @@ jobs:
       - name: Perform CodeQL Analysis
         if: ${{ inputs.codeql-execution == true }}
         uses: github/codeql-action/analyze@v2
- 
+        
       - name: Generate JSON SBOM
         if: ${{ inputs.sbom-generation == true && inputs.target-project-path != '' && inputs.sbom-filename != '' }}
         run: |

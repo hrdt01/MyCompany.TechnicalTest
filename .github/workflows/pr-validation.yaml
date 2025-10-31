@@ -6,6 +6,13 @@ on:
   push:
     branches:
       - feature/*
+
+permissions:
+  checks: write
+  pull-requests: write
+  contents: read
+
+
 jobs:
   call-restore-and-build:
     name: Invoke build solution
@@ -31,6 +38,6 @@ jobs:
     with:
       codeql-execution: false
       sbom-generation: true
-      target-project-path: ./src/MyCompany.Microservice.Api/MyCompany.Microservice.Api.csproj
+      target-project-path: TechnicalTest.HectorRomero.sln
       sbom-filename: MyCompany.Microservice.Api.sbom.json
     

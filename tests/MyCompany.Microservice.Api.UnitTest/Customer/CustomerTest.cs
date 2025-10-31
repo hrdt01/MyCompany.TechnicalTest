@@ -17,8 +17,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
     [TestFixture]
     public class CustomerTest
     {
-        private WebApplicationFixture _factory;
-        private HttpClient _client;
+        private IntegrationTestWebApplicationFactory _factory;
 
         /// <summary>
         /// Method to allocate resources.
@@ -26,7 +25,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _factory = new WebApplicationFixture();
+            _factory = new IntegrationTestWebApplicationFactory();
         }
 
         /// <summary>
@@ -36,24 +35,6 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
         public void OneTimeTearDown()
         {
             _factory.Dispose();
-        }
-
-        /// <summary>
-        /// Method to allocate resources.
-        /// </summary>
-        [SetUp]
-        public void Setup()
-        {
-            _client = _factory.CreateClient();
-        }
-
-        /// <summary>
-        /// Method to free resources.
-        /// </summary>
-        [TearDown]
-        public void TearDown()
-        {
-            _client.Dispose();
         }
 
         /// <summary>
@@ -71,7 +52,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var newCustomerEndpoint = UseCasesEndpoints.NewCustomerEndpoint;
 
             // Act
-            var newCustomerResponse = await _client.PostAsJsonAsync(
+            var newCustomerResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newCustomerEndpoint, UriKind.Relative),
                 newCustomerModel);
 
@@ -94,7 +75,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var newCustomerEndpoint = UseCasesEndpoints.NewCustomerEndpoint;
 
             // Act
-            var newCustomerResponse = await _client.PostAsJsonAsync(
+            var newCustomerResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newCustomerEndpoint, UriKind.Relative),
                 newCustomerModel);
             var newCustomerResult = await newCustomerResponse.Content.ReadFromJsonAsync<CreateNewCustomerResponse>();
@@ -123,7 +104,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
             var newCustomerEndpoint = UseCasesEndpoints.NewCustomerEndpoint;
-            var newCustomerResponse = await _client.PostAsJsonAsync(
+            var newCustomerResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newCustomerEndpoint, UriKind.Relative),
                 newCustomerModel);
             var newCustomerResult = await newCustomerResponse.Content.ReadFromJsonAsync<CreateNewCustomerResponse>();
@@ -133,7 +114,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 FleetName = BaseTestConstants.FleetNameTest
             };
             var newFleetEndpoint = UseCasesEndpoints.NewFleetEndpoint;
-            var newFleetResponse = await _client.PostAsJsonAsync(
+            var newFleetResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newFleetEndpoint, UriKind.Relative),
                 newFleetModel);
             var newFleetResult = await newFleetResponse.Content.ReadFromJsonAsync<CreateNewFleetResponse>();
@@ -146,7 +127,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
             var addNewVehicleEndpoint = UseCasesEndpoints.AddNewVehicleEndpoint;
-            var addNewVehicleResponse = await _client.PostAsJsonAsync(
+            var addNewVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(addNewVehicleEndpoint, UriKind.Relative),
                 newVehicleModel);
             var addNewVehicleResult = await addNewVehicleResponse.Content.ReadFromJsonAsync<AddNewVehicleToFleetResponse>();
@@ -162,7 +143,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var rentVehicleEndpoint = UseCasesEndpoints.RentVehicleEndpoint;
 
             // Act
-            var rentVehicleResponse = await _client.PostAsJsonAsync(
+            var rentVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(rentVehicleEndpoint, UriKind.Relative),
                 rentVehicleModel);
             var rentVehicleResult = await rentVehicleResponse.Content.ReadFromJsonAsync<RentVehicleResponse>();
@@ -180,7 +161,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var endpointToConsume =
                 UseCasesEndpoints.GetAvailableVehiclesEndpoint
                     .Replace("{fleetId}", rentVehicleResult.RentedVehicle!.FleetId.ToString(), StringComparison.InvariantCultureIgnoreCase);
-            var availableVehiclesResponse = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var availableVehiclesResponse = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
             var availableVehiclesResult = await availableVehiclesResponse.Content.ReadFromJsonAsync<GetAvailableVehiclesInFleetResponse>();
             using (Assert.EnterMultipleScope())
             {
@@ -203,7 +184,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
             var newCustomerEndpoint = UseCasesEndpoints.NewCustomerEndpoint;
-            var newCustomerResponse = await _client.PostAsJsonAsync(
+            var newCustomerResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newCustomerEndpoint, UriKind.Relative),
                 newCustomerModel);
             var newCustomerResult = await newCustomerResponse.Content.ReadFromJsonAsync<CreateNewCustomerResponse>();
@@ -213,7 +194,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 FleetName = BaseTestConstants.FleetNameTest
             };
             var newFleetEndpoint = UseCasesEndpoints.NewFleetEndpoint;
-            var newFleetResponse = await _client.PostAsJsonAsync(
+            var newFleetResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newFleetEndpoint, UriKind.Relative),
                 newFleetModel);
             var newFleetResult = await newFleetResponse.Content.ReadFromJsonAsync<CreateNewFleetResponse>();
@@ -226,7 +207,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
             var addNewVehicleEndpoint = UseCasesEndpoints.AddNewVehicleEndpoint;
-            var addNewVehicle1Response = await _client.PostAsJsonAsync(
+            var addNewVehicle1Response = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(addNewVehicleEndpoint, UriKind.Relative),
                 newVehicleModel1);
             var addNewVehicle1Result = await addNewVehicle1Response.Content.ReadFromJsonAsync<AddNewVehicleToFleetResponse>();
@@ -238,7 +219,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 VehicleModel = BaseTestConstants.AnotherModelNameTest,
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
-            var addNewVehicle2Response = await _client.PostAsJsonAsync(
+            var addNewVehicle2Response = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(addNewVehicleEndpoint, UriKind.Relative),
                 newVehicleModel2);
             var addNewVehicle2Result = await addNewVehicle2Response.Content.ReadFromJsonAsync<AddNewVehicleToFleetResponse>();
@@ -255,7 +236,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             };
             var rentVehicleEndpoint = UseCasesEndpoints.RentVehicleEndpoint;
 
-            var rentVehicle1Response = await _client.PostAsJsonAsync(
+            var rentVehicle1Response = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(rentVehicleEndpoint, UriKind.Relative),
                 rentVehicleModel1);
             var rentVehicle1Result = await rentVehicle1Response.Content.ReadFromJsonAsync<RentVehicleResponse>();
@@ -272,7 +253,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             };
 
             // Act
-            var rentVehicle2Response = await _client.PostAsJsonAsync(
+            var rentVehicle2Response = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(rentVehicleEndpoint, UriKind.Relative),
                 rentVehicleModel2);
             var rentVehicle2Result = await rentVehicle2Response.Content.ReadFromJsonAsync<RentVehicleResponse>();
@@ -292,7 +273,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var endpointToConsume =
                 UseCasesEndpoints.GetAvailableVehiclesEndpoint
                     .Replace("{fleetId}", rentVehicle1Result.RentedVehicle!.FleetId.ToString(), StringComparison.InvariantCultureIgnoreCase);
-            var availableVehiclesResponse = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var availableVehiclesResponse = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
             var availableVehiclesResult = await availableVehiclesResponse.Content.ReadFromJsonAsync<GetAvailableVehiclesInFleetResponse>();
             using (Assert.EnterMultipleScope())
             {
@@ -315,7 +296,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
             var newCustomerEndpoint = UseCasesEndpoints.NewCustomerEndpoint;
-            var newCustomerResponse = await _client.PostAsJsonAsync(
+            var newCustomerResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newCustomerEndpoint, UriKind.Relative),
                 newCustomerModel);
             var newCustomerResult = await newCustomerResponse.Content.ReadFromJsonAsync<CreateNewCustomerResponse>();
@@ -325,7 +306,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 FleetName = BaseTestConstants.FleetNameTest
             };
             var newFleetEndpoint = UseCasesEndpoints.NewFleetEndpoint;
-            var newFleetResponse = await _client.PostAsJsonAsync(
+            var newFleetResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(newFleetEndpoint, UriKind.Relative),
                 newFleetModel);
             var newFleetResult = await newFleetResponse.Content.ReadFromJsonAsync<CreateNewFleetResponse>();
@@ -338,7 +319,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
             var addNewVehicleEndpoint = UseCasesEndpoints.AddNewVehicleEndpoint;
-            var addNewVehicleResponse = await _client.PostAsJsonAsync(
+            var addNewVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(addNewVehicleEndpoint, UriKind.Relative),
                 newVehicleModel);
             var addNewVehicleResult = await addNewVehicleResponse.Content.ReadFromJsonAsync<AddNewVehicleToFleetResponse>();
@@ -352,7 +333,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
                 EndRent = BaseTestConstants.RentFinishedOn
             };
             var rentVehicleEndpoint = UseCasesEndpoints.RentVehicleEndpoint;
-            var rentVehicleResponse = await _client.PostAsJsonAsync(
+            var rentVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(rentVehicleEndpoint, UriKind.Relative),
                 rentVehicleModel);
             var rentVehicleResult = await rentVehicleResponse.Content.ReadFromJsonAsync<RentVehicleResponse>();
@@ -365,7 +346,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             };
 
             // Act
-            var returnRentedVehicleResponse = await _client.PostAsJsonAsync(
+            var returnRentedVehicleResponse = await _factory.HttpClient.PostAsJsonAsync(
                 new Uri(returnRentedVehicleEndpoint, UriKind.Relative),
                 returnRentedVehicleModel);
             var returnRentedVehicleResult =
@@ -385,7 +366,7 @@ namespace MyCompany.Microservice.Api.UnitTest.Customer
             var endpointToConsume =
                 UseCasesEndpoints.GetAvailableVehiclesEndpoint
                     .Replace("{fleetId}", rentVehicleResult.RentedVehicle!.FleetId.ToString(), StringComparison.InvariantCultureIgnoreCase);
-            var availableVehiclesResponse = await _client.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
+            var availableVehiclesResponse = await _factory.HttpClient.GetAsync(new Uri(endpointToConsume, UriKind.Relative));
             var availableVehiclesResult = await availableVehiclesResponse.Content.ReadFromJsonAsync<GetAvailableVehiclesInFleetResponse>();
             using (Assert.EnterMultipleScope())
             {
