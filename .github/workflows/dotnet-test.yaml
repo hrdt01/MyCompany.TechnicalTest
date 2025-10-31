@@ -40,12 +40,12 @@ jobs:
         customSettings: "" # Optional custom settings (separated by semicolon). See: https://github.com/danielpalme/ReportGenerator/wiki/Settings.
         toolpath: "reportgeneratortool" # Default directory for installing the dotnet tool.
 
-    - name: Upload Combined Coverage XML
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage
-        path: ${{ github.workspace }}/Cobertura.xml
-        retention-days: 5
+    # - name: Upload Combined Coverage XML
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: coverage
+    #     path: ${{ github.workspace }}/Cobertura.xml
+    #     retention-days: 5
 
     - name: Publish Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
@@ -53,11 +53,11 @@ jobs:
         filename: "Cobertura.xml"
         badge: true
         fail_below_min: false # just informative for now
-        format: 'markdown'
+        format: "markdown"
         hide_branch_rate: false
         hide_complexity: false
         indicators: true
-        output: 'both'
+        output: "both"
         thresholds: "10 30"
         
     - name: Publish Test Results
@@ -69,10 +69,11 @@ jobs:
 
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
+      # if: github.event_name == 'pull_request'
+      if: always()
       with:
         recreate: true
         path: code-coverage-results.md
 
-    - name: Write to Job Summary
-      run: cat SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+    # - name: Write to Job Summary
+    #   run: cat SummaryGithub.md >> $GITHUB_STEP_SUMMARY
