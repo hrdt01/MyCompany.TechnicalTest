@@ -1,37 +1,82 @@
 {
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
   "metadata": [
     {
-      "__placeholder__": "__nothing__",
-      "filter": "docfx-filter.yml",
-      "includePrivateMembers": false,
-      "EnumSortOrder": "declaringOrder",
-      "includeExplicitInterfaceImplementations": true,
-      "memberLayout": "separatePages",
-      "allowCompilationErrors": true,
       "src": [
         {
-          "src": "../",
-          "files": [
-            "**/*.csproj",
-            "**/*.dll",
-            "**/*.cs"
-          ],
+          "src": "../src/",
           "exclude": [
-            "**/.*",
-            "**/bin/**",
-            "**/obj/**"
+            "../tests/**"
+          ],
+          "files": [
+            "/**/*.csproj"
           ]
         }
       ],
-      "dest": "api",
-      "disableGitFeatures": false,
+      "output": "projects/",
+      "outputFormat": "apiPage",
+      "includePrivateMembers": false,
+      "disableGitFeatures": true,
       "disableDefaultFilter": false,
-      "shouldSkipMarkup": false,
-      "globalNamespaceId": "Global",
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false,
       "properties": {
-        "DefineConstants": "",
         "TargetFramework": "net8.0"
       }
     }
-  ]
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}",
+          "toc.yml"
+        ],
+        "exclude": [
+          "_site/**"
+        ],
+        "dest": "."
+      },
+      {
+        "files": [
+          "**/*.yml"
+        ],
+        "src": "projects",
+        "dest": "projects"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images\\**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "exportViewModel": false,
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "MyCompany.TechnicalTest",
+      "_appTitle": "MyCompany.TechnicalTest Documentation",
+      "_enableNewTab": "true",
+      "_disableNavbar": "false",
+      "_enableSearch": true,
+      "_disableContribution": "true",
+      "_disableNextArticle": "true",
+      "_disableAffix": "false",
+      "pdf": false,
+      "pdfTocPage": false
+    },
+    "postProcessors": [
+      "ExtractSearchIndex"
+    ],
+    "keepFileLink": false,
+    "disableGitFeatures": true,
+    "markdownEngineName": "markdig"
+  }
 }

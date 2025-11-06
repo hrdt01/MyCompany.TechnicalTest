@@ -40,12 +40,16 @@ jobs:
       - name: Build
         run: dotnet build TechnicalTest.HectorRomero.sln --configuration Release --no-restore
 
-      - uses: sator-imaging/docfx-pages@v1
-        id: deployment  
+      - name: Install DocFx
+        run: dotnet tool update -g docfx
+
+      - name: Invoke DocFx
+        run: docfx ./.docfx/docfx.json
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          app_name:    'MyCompany.TechnicalTest'
-          site_title:  'MyCompany.TechnicalTest Documentation'
-          site_footer: '<big>&copy; Hector Romero</big>'
-          class_members: 'separatePages'  # 'separatePages' or 'samePage'
-          google_analytics: ''
-          define_symbols: ''          
+          path: '_site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4        
