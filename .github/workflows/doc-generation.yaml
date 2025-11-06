@@ -1,0 +1,37 @@
+name: Documentation generation for GitHub Pages
+
+on:
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:  
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4        
+
+      - uses: sator-imaging/docfx-pages@v1
+        id: deployment  
+        with:
+          app_name:    'MyCompany.TechnicalTest'
+          site_title:  'MyCompany.TechnicalTest Documentation'
+          site_footer: '<big>&copy; Hector Romero</big>'
+          class_members: 'separatePages'  # 'separatePages' or 'samePage'
+          google_analytics: ''
+          define_symbols: ''          
