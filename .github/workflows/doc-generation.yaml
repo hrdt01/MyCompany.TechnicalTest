@@ -3,6 +3,9 @@ name: Documentation generation for GitHub Pages
 on:
   pull_request:
     branches: [ master ]
+  push:
+    branches-ignore:
+      - feature/*
 
   workflow_dispatch:
   
@@ -24,7 +27,18 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v4        
+        uses: actions/checkout@v5
+
+      - name: Setup .NET version
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+    
+      - name: Install dependencies
+        run: dotnet restore TechnicalTest.HectorRomero.sln
+
+      - name: Build
+        run: dotnet build TechnicalTest.HectorRomero.sln --configuration Release --no-restore
 
       - uses: sator-imaging/docfx-pages@v1
         id: deployment  
