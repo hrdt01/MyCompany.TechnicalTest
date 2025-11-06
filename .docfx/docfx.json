@@ -1,0 +1,37 @@
+{
+  "metadata": [
+    {
+      "__placeholder__": "__nothing__",
+      "filter": "docfx-filter.yml",
+      "includePrivateMembers": false,
+      "EnumSortOrder": "declaringOrder",
+      "includeExplicitInterfaceImplementations": true,
+      "memberLayout": "separatePages",
+      "allowCompilationErrors": true,
+      "src": [
+        {
+          "src": "../",
+          "files": [
+            "**/*.csproj",
+            "**/*.dll",
+            "**/*.cs"
+          ],
+          "exclude": [
+            "**/.*",
+            "**/bin/**",
+            "**/obj/**"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "shouldSkipMarkup": false,
+      "globalNamespaceId": "Global",
+      "properties": {
+        "DefineConstants": "",
+        "TargetFramework": "net8.0"
+      }
+    }
+  ]
+}
