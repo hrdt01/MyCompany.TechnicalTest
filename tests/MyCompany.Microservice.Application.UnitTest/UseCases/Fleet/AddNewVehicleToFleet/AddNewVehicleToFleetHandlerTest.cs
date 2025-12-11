@@ -31,7 +31,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
             FleetRepositoryMock
-                .Setup(x => x.GetFleetById(It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId))))
+                .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId))))
                 .ReturnsAsync(new FleetDto
                 {
                     FleetId = BaseTestConstants.FleetIdTest,
@@ -39,7 +39,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 });
 
             FleetRepositoryMock
-                .Setup(x => x.AddNewVehicle(
+                .Setup(x => x.AddNewVehicleToFleetAsync(
                     It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId)),
                     It.IsAny<VehicleDto>()))
                 .ReturnsAsync(new FleetDto
@@ -93,7 +93,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
             FleetRepositoryMock
-                .Setup(x => x.GetFleetById(It.Is<Guid>(guid => guid != Guid.NewGuid())))
+                .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid != Guid.NewGuid())))
                 .ReturnsAsync((FleetDto?)null);
 
             var handler = new AddNewVehicleToFleetHandler(FleetServiceMock.Object, logger);

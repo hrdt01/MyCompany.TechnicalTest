@@ -28,7 +28,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Customer.CreateNe
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
             CustomerRepositoryMock
-                .Setup(x => x.AddNewCustomer(It.IsAny<CustomerDto>()))
+                .Setup(x => x.AddNewCustomerAsync(It.IsAny<CustomerDto>()))
                 .ReturnsAsync(new CustomerDto
                 {
                     CustomerId = BaseTestConstants.CustomerIdTest,

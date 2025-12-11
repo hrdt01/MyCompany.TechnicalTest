@@ -28,7 +28,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.CreateNewFl
                 FleetName = BaseTestConstants.FleetNameTest
             };
             FleetRepositoryMock
-                .Setup(x => x.AddNewFleet(It.IsAny<FleetDto>()))
+                .Setup(x => x.AddNewFleetAsync(It.IsAny<FleetDto>()))
                 .ReturnsAsync(new FleetDto
                 {
                     FleetId = BaseTestConstants.FleetIdTest,

@@ -35,7 +35,7 @@ namespace MyCompany.Microservice.Services.Implementation
 
             var fleetDto = new FleetDto { FleetName = newFleetName };
 
-            return await _fleetRepository.AddNewFleet(fleetDto);
+            return await _fleetRepository.AddNewFleetAsync(fleetDto);
         }
 
         /// <inheritdoc />
@@ -44,7 +44,7 @@ namespace MyCompany.Microservice.Services.Implementation
             ArgumentNullException.ThrowIfNull(sourceFleet);
             ArgumentNullException.ThrowIfNull(sourceVehicle);
 
-            var existingFleet = await _fleetRepository.GetFleetById(sourceFleet.FleetId);
+            var existingFleet = await _fleetRepository.GetFleetByIdAsync(sourceFleet.FleetId);
             if (existingFleet == null)
             {
                 _logger.LogWarningNotFoundFleet(
@@ -54,7 +54,7 @@ namespace MyCompany.Microservice.Services.Implementation
                 ArgumentNullException.ThrowIfNull(existingFleet);
             }
 
-            return await _fleetRepository.AddNewVehicle(existingFleet.FleetId, sourceVehicle);
+            return await _fleetRepository.AddNewVehicleToFleetAsync(existingFleet.FleetId, sourceVehicle);
         }
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace MyCompany.Microservice.Services.Implementation
         {
             ArgumentNullException.ThrowIfNull(sourceFleet);
 
-            return await _fleetRepository.GetAvailableFleetVehicles(sourceFleet.FleetId);
+            return await _fleetRepository.GetAvailableFleetVehiclesAsync(sourceFleet.FleetId);
         }
     }
 }

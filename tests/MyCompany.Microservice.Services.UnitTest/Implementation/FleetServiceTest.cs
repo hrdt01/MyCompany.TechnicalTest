@@ -30,7 +30,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.AddNewFleet(It.Is<FleetDto>(it => it.FleetName == BaseTestConstants.FleetNameTest)))
+                    repo.AddNewFleetAsync(It.Is<FleetDto>(it => it.FleetName == BaseTestConstants.FleetNameTest)))
                 .ReturnsAsync(fleetDto);
 
             // Act
@@ -71,7 +71,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.GetFleetById(It.IsAny<Guid>()))
+                    repo.GetFleetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(fleetDto);
 
             var resultFleetDto = new FleetDto()
@@ -83,7 +83,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.AddNewVehicle(It.IsAny<Guid>(), It.Is<VehicleDto>(it => it.VehicleId == BaseTestConstants.VehicleIdTest)))
+                    repo.AddNewVehicleToFleetAsync(It.IsAny<Guid>(), It.Is<VehicleDto>(it => it.VehicleId == BaseTestConstants.VehicleIdTest)))
                 .ReturnsAsync(resultFleetDto);
 
             // Act
@@ -127,7 +127,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.GetFleetById(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
+                    repo.GetFleetByIdAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(fleetDto);
 
             var otherFleetDto = new FleetDto()

@@ -55,12 +55,12 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.GetAvailableFleetVehicles(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
+                    repo.GetAvailableFleetVehiclesAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(availableVehiclesDto);
 
             CustomerRepositoryMock
                 .Setup(repo =>
-                    repo.RentVehicle(It.Is<RentedVehicleDto>(it => it == vehicleToRentDto)))
+                    repo.RentVehicleAsync(It.Is<RentedVehicleDto>(it => it == vehicleToRentDto)))
                 .ReturnsAsync(rentedVehicleDto);
 
             // Act
@@ -107,7 +107,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             FleetRepositoryMock
                 .Setup(repo =>
-                    repo.GetAvailableFleetVehicles(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
+                    repo.GetAvailableFleetVehiclesAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(availableVehiclesDto);
 
             // Act
@@ -138,7 +138,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             CustomerRepositoryMock
                 .Setup(repo =>
-                    repo.AddNewCustomer(It.Is<CustomerDto>(it => it.CustomerName == BaseTestConstants.CustomerNameTest)))
+                    repo.AddNewCustomerAsync(It.Is<CustomerDto>(it => it.CustomerName == BaseTestConstants.CustomerNameTest)))
                 .ReturnsAsync(customerDto);
 
             // Act
@@ -185,7 +185,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             CustomerRepositoryMock
                 .Setup(repo =>
-                    repo.GetRentedVehicleByIdAndCustomerId(
+                    repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
                         It.Is<Guid>(it => it == rentedVehicleDto.CustomerId)))
                 .ReturnsAsync(rentedVehicleDto);
@@ -242,7 +242,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             CustomerRepositoryMock
                 .Setup(repo =>
-                    repo.GetRentedVehicleByIdAndCustomerId(
+                    repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
                         It.Is<Guid>(it => it == rentedVehicleDto.CustomerId)))
                 .ReturnsAsync(rentedVehicleDto);
@@ -293,7 +293,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
 
             CustomerRepositoryMock
                 .Setup(repo =>
-                    repo.GetRentedVehicleByIdAndCustomerId(
+                    repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
                         It.Is<Guid>(it => it == rentedVehicleDto.CustomerId)))
                 .ReturnsAsync(rentedVehicleDto);

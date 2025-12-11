@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data.Common;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
+using MyCompany.Microservice.Domain.DbEntities;
 using MyCompany.Microservice.Domain.DTO;
 using MyCompany.Microservice.Domain.Interfaces;
 using MyCompany.Microservice.Infrastructure.Database;
@@ -13,6 +16,7 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
         private readonly FleetContext _fleetContext;
         private readonly IRentedVehicleEntityFactory _rentedVehicleEntityFactory;
         private readonly ICustomerEntityFactory _customerEntityFactory;
+        private readonly DbConnection _connection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomerRepository"/> class.
@@ -33,10 +37,11 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
             _fleetContext.Database.EnsureCreated();
             _rentedVehicleEntityFactory = rentedVehicleEntityFactory;
             _customerEntityFactory = customerEntityFactory;
+            _connection = _fleetContext.Database.GetDbConnection();
         }
 
         /// <inheritdoc />
-        public async Task<CustomerDto?> AddNewCustomer(CustomerDto newCustomer)
+        public async Task<CustomerDto?> AddNewCustomerAsync(CustomerDto newCustomer)
         {
             ArgumentNullException.ThrowIfNull(newCustomer);
 
@@ -44,11 +49,11 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
             await _fleetContext.Customers.AddAsync(customerDbInstance);
             await _fleetContext.SaveChangesAsync();
 
-            return await GetCustomerById(customerDbInstance.CustomerId);
+            return await GetCustomerByIdAsync(customerDbInstance.CustomerId);
         }
 
         /// <inheritdoc />
-        public async Task<RentedVehicleDto?> RentVehicle(RentedVehicleDto sourceRentedVehicle)
+        public async Task<RentedVehicleDto?> RentVehicleAsync(RentedVehicleDto sourceRentedVehicle)
         {
             ArgumentNullException.ThrowIfNull(sourceRentedVehicle);
 
@@ -57,7 +62,7 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
 
             await _fleetContext.SaveChangesAsync();
 
-            return await GetRentedVehicleById(newRentedVehicleDbInstance.RentedVehicleId);
+            return await GetRentedVehicleByIdAsync(newRentedVehicleDbInstance.RentedVehicleId);
         }
 
         /// <inheritdoc />
@@ -65,7 +70,7 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
         {
             ArgumentNullException.ThrowIfNull(rentedVehicleId);
 
-            var rentedVehicleDto = await GetRentedVehicleById(rentedVehicleId);
+            var rentedVehicleDto = await GetRentedVehicleByIdAsync(rentedVehicleId);
             if (rentedVehicleDto == null)
             {
                 ArgumentNullException.ThrowIfNull(rentedVehicleDto);
@@ -79,18 +84,21 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
 
             await _fleetContext.SaveChangesAsync();
 
-            return await GetRentedVehicleById(rentedVehicleId);
+            return await GetRentedVehicleByIdAsync(rentedVehicleId);
         }
 
         /// <inheritdoc />
-        public async Task<RentedVehicleDto?> GetRentedVehicleByIdAndCustomerId(Guid rentedVehicleId, Guid customerId)
+        public async Task<RentedVehicleDto?> GetRentedVehicleByIdAndCustomerIdAsync(Guid rentedVehicleId, Guid customerId)
         {
-            var fromDb = await _fleetContext.RentedVehicles.AsNoTracking()
-                .OrderBy(rentedVehicle => rentedVehicle.RentedVehicleId)
-                .Where(rentedVehicle =>
-                    rentedVehicle.RentedVehicleId == rentedVehicleId
-                    && rentedVehicle.CustomerId == customerId)
-                .FirstOrDefaultAsync();
+            var paramValue = new DynamicParameters();
+            paramValue.Add("customerId", customerId);
+            paramValue.Add("id", rentedVehicleId);
+
+            var queryToExecute =
+                "SELECT RentedVehicleId, VehicleId, CustomerId, FleetId, RentStartedOn, RentFinishedOn " +
+                "FROM RentedVehicle WHERE RentedVehicleId = @id AND CustomerId = @customerId ORDER BY RentedVehicleId ASC";
+
+            var fromDb = await _connection.QueryFirstOrDefaultAsync<RentedVehicle>(queryToExecute, paramValue);
 
             return fromDb == null
                 ? null
@@ -106,14 +114,17 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<RentedVehicleDto>?> GetRentedVehiclesByCustomerId(Guid customerId)
+        public async Task<IEnumerable<RentedVehicleDto>?> GetRentedVehiclesByCustomerIdAsync(Guid customerId)
         {
-            var fromDb = await _fleetContext.RentedVehicles.AsNoTracking()
-                .OrderByDescending(rentedVehicle => rentedVehicle.RentFinishedOn)
-                .Where(rentedVehicle => rentedVehicle.CustomerId == customerId)
-                .ToListAsync();
+            var paramValue = new DynamicParameters();
+            paramValue.Add("customerId", customerId);
 
-            return fromDb.Count <= 0
+            var queryToExecute =
+                "SELECT RentedVehicleId, VehicleId, CustomerId, FleetId, RentStartedOn, RentFinishedOn " +
+                "FROM RentedVehicle WHERE CustomerId = @customerId ORDER BY RentFinishedOn DESC";
+            var fromDb = await _connection.QueryAsync<RentedVehicle>(queryToExecute, paramValue);
+
+            return !fromDb.Any()
                 ? null
                 : fromDb.Select(entity => new RentedVehicleDto
                 {
@@ -127,12 +138,15 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<RentedVehicleDto?> GetRentedVehicleById(Guid rentedVehicleId)
+        public async Task<RentedVehicleDto?> GetRentedVehicleByIdAsync(Guid rentedVehicleId)
         {
-            var fromDb = await _fleetContext.RentedVehicles.AsNoTracking()
-                .OrderBy(rentedVehicle => rentedVehicle.RentedVehicleId)
-                .Where(rentedVehicle => rentedVehicle.RentedVehicleId == rentedVehicleId)
-                .FirstOrDefaultAsync();
+            var paramValue = new DynamicParameters();
+            paramValue.Add("id", rentedVehicleId);
+
+            var queryToExecute =
+                "SELECT RentedVehicleId, VehicleId, CustomerId, FleetId, RentStartedOn, RentFinishedOn " +
+                "FROM RentedVehicle WHERE RentedVehicleId = @id ORDER BY RentedVehicleId ASC";
+            var fromDb = await _connection.QueryFirstOrDefaultAsync<RentedVehicle>(queryToExecute, paramValue);
 
             return fromDb == null
                 ? null
@@ -148,12 +162,15 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<CustomerDto?> GetCustomerById(Guid customerId)
+        public async Task<CustomerDto?> GetCustomerByIdAsync(Guid customerId)
         {
-            var fromDb = await _fleetContext.Customers.AsNoTracking()
-                .OrderBy(customer => customer.CustomerId)
-                .Where(customer => customer.CustomerId == customerId)
-                .FirstOrDefaultAsync();
+            var paramValue = new DynamicParameters();
+            paramValue.Add("id", customerId);
+
+            var queryToExecute =
+                "SELECT CustomerId, CustomerName FROM Customer WHERE CustomerId = @id ORDER BY CustomerId ASC";
+
+            var fromDb = await _connection.QueryFirstOrDefaultAsync<Customer>(queryToExecute, paramValue);
 
             return fromDb == null
                 ? null

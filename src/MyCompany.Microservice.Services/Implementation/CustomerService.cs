@@ -38,12 +38,12 @@ namespace MyCompany.Microservice.Services.Implementation
         {
             ArgumentNullException.ThrowIfNull(source);
             var availableVehicles =
-                await _fleetRepository.GetAvailableFleetVehicles(source.FleetId);
+                await _fleetRepository.GetAvailableFleetVehiclesAsync(source.FleetId);
             var activeRentedVehicles = await CustomerHasActiveRentedVehicles(source);
             var isAvailable = availableVehicles.Any(vehicle => vehicle.VehicleId == source.VehicleId);
             return !isAvailable || activeRentedVehicles
                 ? null
-                : await _customerRepository.RentVehicle(source);
+                : await _customerRepository.RentVehicleAsync(source);
         }
 
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace MyCompany.Microservice.Services.Implementation
             ArgumentNullException.ThrowIfNull(rentedVehicle);
 
             var existingRentedVehicle =
-                await _customerRepository.GetRentedVehicleByIdAndCustomerId(
+                await _customerRepository.GetRentedVehicleByIdAndCustomerIdAsync(
                     rentedVehicle.RentedVehicleId,
                     rentedVehicle.CustomerId);
 
@@ -75,14 +75,14 @@ namespace MyCompany.Microservice.Services.Implementation
 
             var customerDto = new CustomerDto { CustomerName = newCustomerName };
 
-            return await _customerRepository.AddNewCustomer(customerDto);
+            return await _customerRepository.AddNewCustomerAsync(customerDto);
         }
 
         /// <inheritdoc />
         public async Task<bool> CustomerHasActiveRentedVehicles(RentedVehicleDto source)
         {
             ArgumentNullException.ThrowIfNull(source);
-            var allRentingsByUser = await _customerRepository.GetRentedVehiclesByCustomerId(source.CustomerId);
+            var allRentingsByUser = await _customerRepository.GetRentedVehiclesByCustomerIdAsync(source.CustomerId);
             return allRentingsByUser != null && allRentingsByUser.Any(renting => renting.EndRent > DateTime.UtcNow);
         }
     }

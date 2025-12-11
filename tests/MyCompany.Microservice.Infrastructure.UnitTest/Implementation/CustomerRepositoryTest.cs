@@ -3,6 +3,7 @@ using MyCompany.Microservice.BaseTest.TestHelpers;
 using MyCompany.Microservice.Domain.DTO;
 using MyCompany.Microservice.Domain.Interfaces;
 using MyCompany.Microservice.Infrastructure.Database;
+using MyCompany.Microservice.Infrastructure.Extensions;
 using MyCompany.Microservice.Infrastructure.Implementation;
 
 namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
@@ -27,6 +28,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             _testDbContext = TestDbContext.CreateContext<FleetContext>(_testDbConnection);
             testRentedVehicleEntityFactory = new EntityFactory();
             testCustomerEntityEntityFactory = new EntityFactory();
+            InfrastructureExtensions.SqLiteTypeHandler();
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             };
 
             // Act
-            var result = await repositoryInstance.AddNewCustomer(newCustomerDto);
+            var result = await repositoryInstance.AddNewCustomerAsync(newCustomerDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -95,10 +97,10 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             {
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
-            var persistedCustomer = await repositoryInstance.AddNewCustomer(newCustomerDto);
+            var persistedCustomer = await repositoryInstance.AddNewCustomerAsync(newCustomerDto);
 
             // Act
-            var result = await repositoryInstance.GetCustomerById(persistedCustomer!.CustomerId);
+            var result = await repositoryInstance.GetCustomerByIdAsync(persistedCustomer!.CustomerId);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -127,7 +129,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             {
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
-            var persistedCustomer = await repositoryInstance.AddNewCustomer(newCustomerDto);
+            var persistedCustomer = await repositoryInstance.AddNewCustomerAsync(newCustomerDto);
 
             var rentedVehicleDto = new RentedVehicleDto
             {
@@ -139,7 +141,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             };
 
             // Act
-            var result = await repositoryInstance.RentVehicle(rentedVehicleDto);
+            var result = await repositoryInstance.RentVehicleAsync(rentedVehicleDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -165,7 +167,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
 
-            var rentedVehicle = await repositoryInstance.GetRentedVehicleByIdAndCustomerId(
+            var rentedVehicle = await repositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
                 BaseTestConstants.RentedVehicleIdToReturnTest,
                 BaseTestConstants.CustomerIdTest);
 
@@ -196,7 +198,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 testCustomerEntityEntityFactory);
 
             // Act
-            var result = await repositoryInstance.GetRentedVehicleByIdAndCustomerId(
+            var result = await repositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
                 BaseTestConstants.RentedVehicleIdTest2,
                 BaseTestConstants.CustomerIdTest);
 
@@ -223,7 +225,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 testCustomerEntityEntityFactory);
 
             // Act
-            var result = await repositoryInstance.GetRentedVehicleById(BaseTestConstants.RentedVehicleIdTest);
+            var result = await repositoryInstance.GetRentedVehicleByIdAsync(BaseTestConstants.RentedVehicleIdTest);
 
             // Assert
             using (Assert.EnterMultipleScope())

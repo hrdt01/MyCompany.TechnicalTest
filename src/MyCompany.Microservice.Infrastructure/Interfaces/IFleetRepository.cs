@@ -13,27 +13,27 @@ namespace MyCompany.Microservice.Infrastructure.Interfaces
         /// <param name="fleetId">Fleet identifier.</param>
         /// <param name="sourceVehicle">Instance of <see cref="VehicleDto"/>.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> AddNewVehicle(Guid fleetId, VehicleDto sourceVehicle);
+        Task<FleetDto?> AddNewVehicleToFleetAsync(Guid fleetId, VehicleDto sourceVehicle);
 
         /// <summary>
         /// Add new fleet to the company.
         /// </summary>
         /// <param name="newFleet"><see cref="FleetDto"/> instance.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> AddNewFleet(FleetDto newFleet);
+        Task<FleetDto?> AddNewFleetAsync(FleetDto newFleet);
 
         /// <summary>
         /// Get all available <see cref="VehicleDto"/> in the fleet.
         /// </summary>
         /// <param name="fleetId">Fleet identifier.</param>
         /// <returns>Collection of <see cref="VehicleDto"/>.</returns>
-        Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehicles(Guid fleetId);
+        Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehiclesAsync(Guid fleetId);
 
         /// <summary>
         /// Get an instance of <see cref="FleetDto"/> by its identifier.
         /// </summary>
         /// <param name="fleetId">Fleet identifier.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> GetFleetById(Guid fleetId);
+        Task<FleetDto?> GetFleetByIdAsync(Guid fleetId);
     }
 }
