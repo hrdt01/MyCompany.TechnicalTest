@@ -36,7 +36,7 @@ namespace MyCompany.Microservice.Application.UseCases.Customer.CreateNewCustomer
                 request.CustomerName);
             try
             {
-                var response = await _customerService.AddNewCustomer(request.CustomerName);
+                var response = await _customerService.AddNewCustomerAsync(request.CustomerName);
                 var returnedResponse = new CreateNewCustomerResponse { Customer = response };
                 return returnedResponse;
             }

@@ -34,7 +34,7 @@ namespace MyCompany.Microservice.Services.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<FleetDto?> AddNewFleet(string newFleetName)
+        public async Task<FleetDto?> AddNewFleetAsync(string newFleetName)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(newFleetName);
 
@@ -46,7 +46,7 @@ namespace MyCompany.Microservice.Services.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<FleetDto?> AddNewVehicle(FleetDto sourceFleet, VehicleDto sourceVehicle)
+        public async Task<FleetDto?> AddNewVehicleAsync(FleetDto sourceFleet, VehicleDto sourceVehicle)
         {
             ArgumentNullException.ThrowIfNull(sourceFleet);
             ArgumentNullException.ThrowIfNull(sourceVehicle);
@@ -55,7 +55,7 @@ namespace MyCompany.Microservice.Services.Implementation
             if (existingFleet == null)
             {
                 _logger.LogWarningNotFoundFleet(
-                    $"{nameof(FleetService)} - {nameof(AddNewVehicle)} - ",
+                    $"{nameof(FleetService)} - {nameof(AddNewVehicleAsync)} - ",
                     sourceFleet.FleetId.ToString());
 
                 ArgumentNullException.ThrowIfNull(existingFleet);
@@ -67,7 +67,7 @@ namespace MyCompany.Microservice.Services.Implementation
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehicles(FleetDto sourceFleet)
+        public async Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehiclesAsync(FleetDto sourceFleet)
         {
             ArgumentNullException.ThrowIfNull(sourceFleet);
 

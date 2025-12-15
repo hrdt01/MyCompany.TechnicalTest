@@ -22,7 +22,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var vehicleDto = new VehicleDto()
             {
@@ -58,13 +58,18 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                     repo.GetAvailableFleetVehiclesAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(availableVehiclesDto);
 
-            CustomerRepositoryMock
+            CustomerCommandRepositoryMock
                 .Setup(repo =>
                     repo.RentVehicleAsync(It.Is<RentedVehicleDto>(it => it == vehicleToRentDto)))
                 .ReturnsAsync(rentedVehicleDto);
 
+            CustomerQueryRepositoryMock
+                .Setup(repo =>
+                    repo.GetRentedVehicleByIdAsync(It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId)))
+                .ReturnsAsync(rentedVehicleDto);
+
             // Act
-            var result = await serviceInstance.RentVehicle(vehicleToRentDto);
+            var result = await serviceInstance.RentVehicleAsync(vehicleToRentDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -84,7 +89,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var vehicleDto = new VehicleDto()
             {
@@ -111,7 +116,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 .ReturnsAsync(availableVehiclesDto);
 
             // Act
-            var result = await serviceInstance.RentVehicle(vehicleToRentDto);
+            var result = await serviceInstance.RentVehicleAsync(vehicleToRentDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -129,20 +134,26 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var customerDto = new CustomerDto()
             {
-                CustomerName = BaseTestConstants.CustomerNameTest
+                CustomerName = BaseTestConstants.CustomerNameTest,
+                CustomerId = BaseTestConstants.CustomerIdTest
             };
 
-            CustomerRepositoryMock
+            CustomerCommandRepositoryMock
                 .Setup(repo =>
                     repo.AddNewCustomerAsync(It.Is<CustomerDto>(it => it.CustomerName == BaseTestConstants.CustomerNameTest)))
                 .ReturnsAsync(customerDto);
 
+            CustomerQueryRepositoryMock
+                .Setup(repo =>
+                    repo.GetCustomerByIdAsync(It.Is<Guid>(it => it == BaseTestConstants.CustomerIdTest)))
+                .ReturnsAsync(customerDto);
+
             // Act
-            var result = await serviceInstance.AddNewCustomer(BaseTestConstants.CustomerNameTest);
+            var result = await serviceInstance.AddNewCustomerAsync(BaseTestConstants.CustomerNameTest);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -161,7 +172,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
@@ -183,20 +194,25 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 EndRent = DateTime.UtcNow
             };
 
-            CustomerRepositoryMock
+            CustomerQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
                         It.Is<Guid>(it => it == rentedVehicleDto.CustomerId)))
                 .ReturnsAsync(rentedVehicleDto);
 
-            CustomerRepositoryMock
+            CustomerCommandRepositoryMock
                 .Setup(repo =>
-                    repo.ReturnRentedVehicle(It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId)))
+                    repo.ReturnRentedVehicle(rentedVehicleDto))
+                .ReturnsAsync(returnedRentedVehicleDto);
+
+            CustomerQueryRepositoryMock
+                .Setup(repo =>
+                    repo.GetRentedVehicleByIdAsync(It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId)))
                 .ReturnsAsync(returnedRentedVehicleDto);
 
             // Act
-            var result = await serviceInstance.ReturnRentedVehicle(rentedVehicleDto);
+            var result = await serviceInstance.ReturnRentedVehicleAsync(rentedVehicleDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -218,7 +234,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
@@ -240,7 +256,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 EndRent = DateTime.UtcNow
             };
 
-            CustomerRepositoryMock
+            CustomerQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
@@ -252,7 +268,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
             // Assert
             using (Assert.EnterMultipleScope())
             {
-                await Assert.ThatAsync(() => serviceInstance.ReturnRentedVehicle(returnedRentedVehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
+                await Assert.ThatAsync(() => serviceInstance.ReturnRentedVehicleAsync(returnedRentedVehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
                 Assert.That(logger.Collector.LatestRecord, Is.Not.Null);
                 Assert.That(logger.Collector.Count, Is.EqualTo(1));
                 Assert.That(logger.Collector.LatestRecord.Level, Is.EqualTo(LogLevel.Warning));
@@ -269,7 +285,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, CustomerQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
@@ -291,7 +307,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 EndRent = BaseTestConstants.RentFinishedOn
             };
 
-            CustomerRepositoryMock
+            CustomerQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetRentedVehicleByIdAndCustomerIdAsync(
                         It.Is<Guid>(it => it == rentedVehicleDto.RentedVehicleId),
@@ -303,7 +319,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
             // Assert
             using (Assert.EnterMultipleScope())
             {
-                await Assert.ThatAsync(() => serviceInstance.ReturnRentedVehicle(returnedRentedVehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
+                await Assert.ThatAsync(() => serviceInstance.ReturnRentedVehicleAsync(returnedRentedVehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
                 Assert.That(logger.Collector.LatestRecord, Is.Not.Null);
                 Assert.That(logger.Collector.Count, Is.EqualTo(1));
                 Assert.That(logger.Collector.LatestRecord.Level, Is.EqualTo(LogLevel.Warning));

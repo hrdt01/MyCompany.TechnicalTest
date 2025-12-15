@@ -39,7 +39,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 .ReturnsAsync(fleetDto);
 
             // Act
-            var result = await serviceInstance.AddNewFleet(BaseTestConstants.FleetNameTest);
+            var result = await serviceInstance.AddNewFleetAsync(BaseTestConstants.FleetNameTest);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -98,7 +98,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 .ReturnsAsync(resultFleetVehicleDto);
 
             // Act
-            var result = await serviceInstance.AddNewVehicle(fleetDto, vehicleDto);
+            var result = await serviceInstance.AddNewVehicleAsync(fleetDto, vehicleDto);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -152,7 +152,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
             // Assert
             using (Assert.EnterMultipleScope())
             {
-                await Assert.ThatAsync(() => serviceInstance.AddNewVehicle(otherFleetDto, vehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
+                await Assert.ThatAsync(() => serviceInstance.AddNewVehicleAsync(otherFleetDto, vehicleDto), Throws.Exception.TypeOf<ArgumentNullException>());
                 Assert.That(logger.Collector.LatestRecord, Is.Not.Null);
                 Assert.That(logger.Collector.Count, Is.EqualTo(1));
                 Assert.That(logger.Collector.LatestRecord.Level, Is.EqualTo(LogLevel.Warning));

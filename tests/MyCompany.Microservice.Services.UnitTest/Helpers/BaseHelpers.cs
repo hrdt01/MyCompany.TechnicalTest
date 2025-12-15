@@ -13,7 +13,8 @@ namespace MyCompany.Microservice.Services.UnitTest.Helpers
         /// </summary>
         public BaseHelpers()
         {
-            CustomerRepositoryMock = new Mock<ICustomerRepository>();
+            CustomerCommandRepositoryMock = new Mock<ICustomerCommandRepository>();
+            CustomerQueryRepositoryMock = new Mock<ICustomerQueryRepository>();
             FleetCommandRepositoryMock = new Mock<IFleetCommandRepository>();
             FleetQueryRepositoryMock = new Mock<IFleetQueryRepository>();
         }
@@ -31,6 +32,11 @@ namespace MyCompany.Microservice.Services.UnitTest.Helpers
         /// <summary>
         /// Gets the mock instance.
         /// </summary>
-        public Mock<ICustomerRepository> CustomerRepositoryMock { get; }
+        public Mock<ICustomerCommandRepository> CustomerCommandRepositoryMock { get; }
+
+        /// <summary>
+        /// Gets the mock instance.
+        /// </summary>
+        public Mock<ICustomerQueryRepository> CustomerQueryRepositoryMock { get; }
     }
 }

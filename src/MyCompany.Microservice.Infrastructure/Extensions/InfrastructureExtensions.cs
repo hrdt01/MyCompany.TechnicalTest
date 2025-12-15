@@ -28,9 +28,10 @@ namespace MyCompany.Microservice.Infrastructure.Extensions
                 var context = sp.GetRequiredService<FleetContext>();
                 return context.Database.GetDbConnection();
             });
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<IFleetCommandRepository, FleetCommandRepository>();
+            services.AddScoped<ICustomerCommandRepository, CustomerCommandRepository>();
             services.AddScoped<ICustomerQueryRepository, CustomerQueryRepository>();
+
+            services.AddScoped<IFleetCommandRepository, FleetCommandRepository>();
             services.AddScoped<IFleetQueryRepository, FleetQueryRepository>();
 
             services.AddSingleton<ICustomerEntityFactory, EntityFactory>();

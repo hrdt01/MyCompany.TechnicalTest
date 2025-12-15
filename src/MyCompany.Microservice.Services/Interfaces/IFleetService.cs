@@ -12,7 +12,7 @@ namespace MyCompany.Microservice.Services.Interfaces
         /// </summary>
         /// <param name="newFleetName">Fleet's name.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> AddNewFleet(string newFleetName);
+        Task<FleetDto?> AddNewFleetAsync(string newFleetName);
 
         /// <summary>
         /// Add new vehicle to the collection of fleet's vehicles.
@@ -20,13 +20,13 @@ namespace MyCompany.Microservice.Services.Interfaces
         /// <param name="sourceFleet">FleetDto instance.</param>
         /// <param name="sourceVehicle">Instance of <see cref="VehicleDto"/>.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> AddNewVehicle(FleetDto sourceFleet, VehicleDto sourceVehicle);
+        Task<FleetDto?> AddNewVehicleAsync(FleetDto sourceFleet, VehicleDto sourceVehicle);
 
         /// <summary>
         /// Get all available <see cref="VehicleDto"/> in the fleet.
         /// </summary>
         /// <param name="sourceFleet">Instance of <see cref="FleetDto"/>.</param>
         /// <returns>Collection of <see cref="VehicleDto"/>.</returns>
-        Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehicles(FleetDto sourceFleet);
+        Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehiclesAsync(FleetDto sourceFleet);
     }
 }

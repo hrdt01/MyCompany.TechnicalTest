@@ -35,16 +35,6 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 .ReturnsAsync(new FleetDto
                 {
                     FleetId = BaseTestConstants.FleetIdTest,
-                    FleetName = BaseTestConstants.FleetNameTest
-                });
-
-            FleetRepositoryMock
-                .Setup(x => x.AddNewVehicleToFleetAsync(
-                    It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId)),
-                    It.IsAny<VehicleDto>()))
-                .ReturnsAsync(new FleetDto
-                {
-                    FleetId = BaseTestConstants.FleetIdTest,
                     FleetName = BaseTestConstants.FleetNameTest,
                     Vehicles = new List<VehicleDto>().Append(
                         new VehicleDto()
@@ -54,6 +44,17 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                             ManufacturedOn = BaseTestConstants.ManufacturedOnTest
                         })
                 });
+
+            FleetCommandRepositoryMock
+                .Setup(x => x.AddNewVehicleToFleetAsync(
+                    It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId)),
+                    It.IsAny<VehicleDto>()))
+                .ReturnsAsync(new FleetVehicleDto()
+                {
+                    FleetId = BaseTestConstants.FleetIdTest,
+                    VehicleId = BaseTestConstants.VehicleIdTest
+                });
+
             var handler = new AddNewVehicleToFleetHandler(FleetServiceMock.Object, logger);
 
             // Act

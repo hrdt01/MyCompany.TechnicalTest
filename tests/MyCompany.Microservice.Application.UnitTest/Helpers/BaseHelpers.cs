@@ -15,17 +15,19 @@ namespace MyCompany.Microservice.Application.UnitTest.Helpers
         /// </summary>
         public BaseHelpers()
         {
-            CustomerRepositoryMock = new Mock<ICustomerRepository>();
-            FleetRepositoryMock = new Mock<IFleetCommandRepository>();
+            CustomerCommandRepositoryMock = new Mock<ICustomerCommandRepository>();
+            CustomerQueryRepositoryMock = new Mock<ICustomerQueryRepository>();
+            FleetCommandRepositoryMock = new Mock<IFleetCommandRepository>();
             FleetQueryRepositoryMock = new Mock<IFleetQueryRepository>();
 
             CustomerServiceMock = new Mock<CustomerService>(
-                CustomerRepositoryMock.Object,
+                CustomerCommandRepositoryMock.Object,
                 FleetQueryRepositoryMock.Object,
+                CustomerQueryRepositoryMock.Object,
                 new FakeLogger<CustomerService>());
 
             FleetServiceMock = new Mock<FleetService>(
-                FleetRepositoryMock.Object,
+                FleetCommandRepositoryMock.Object,
                 FleetQueryRepositoryMock.Object,
                 new FakeLogger<FleetService>());
         }
@@ -43,7 +45,7 @@ namespace MyCompany.Microservice.Application.UnitTest.Helpers
         /// <summary>
         /// Gets the mock instance.
         /// </summary>
-        public Mock<IFleetCommandRepository> FleetRepositoryMock { get; }
+        public Mock<IFleetCommandRepository> FleetCommandRepositoryMock { get; }
 
         /// <summary>
         /// Gets the mock instance.
@@ -53,6 +55,11 @@ namespace MyCompany.Microservice.Application.UnitTest.Helpers
         /// <summary>
         /// Gets the mock instance.
         /// </summary>
-        public Mock<ICustomerRepository> CustomerRepositoryMock { get; }
+        public Mock<ICustomerCommandRepository> CustomerCommandRepositoryMock { get; }
+
+        /// <summary>
+        /// Gets the mock instance.
+        /// </summary>
+        public Mock<ICustomerQueryRepository> CustomerQueryRepositoryMock { get; }
     }
 }

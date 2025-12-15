@@ -9,10 +9,10 @@ using MyCompany.Microservice.Infrastructure.Implementation;
 namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CustomerRepositoryTest"/> class.
+    /// Initializes a new instance of the <see cref="CustomerCommandRepositoryTest"/> class.
     /// </summary>
     [TestFixture]
-    public class CustomerRepositoryTest
+    public class CustomerCommandRepositoryTest
     {
         private readonly SqliteConnection _testDbConnection;
         private readonly FleetContext? _testDbContext;
@@ -20,9 +20,9 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         private readonly ICustomerEntityFactory testCustomerEntityEntityFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomerRepositoryTest"/> class.
+        /// Initializes a new instance of the <see cref="CustomerCommandRepositoryTest"/> class.
         /// </summary>
-        public CustomerRepositoryTest()
+        public CustomerCommandRepositoryTest()
         {
             _testDbConnection = TestDbContext.CreateSqliteTestConnection();
             _testDbContext = TestDbContext.CreateContext<FleetContext>(_testDbConnection);
@@ -58,7 +58,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task AddNewCustomerTest()
         {
             // Arrange
-            var repositoryInstance = new CustomerRepository(
+            var repositoryInstance = new CustomerCommandRepository(
                 _testDbContext!,
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
@@ -88,10 +88,12 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task GetCustomerByIdTest()
         {
             // Arrange
-            var repositoryInstance = new CustomerRepository(
+            var repositoryInstance = new CustomerCommandRepository(
                 _testDbContext!,
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
+
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
 
             var newCustomerDto = new CustomerDto
             {
@@ -100,7 +102,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             var persistedCustomer = await repositoryInstance.AddNewCustomerAsync(newCustomerDto);
 
             // Act
-            var result = await repositoryInstance.GetCustomerByIdAsync(persistedCustomer!.CustomerId);
+            var result = await queryRepositoryInstance.GetCustomerByIdAsync(persistedCustomer!.CustomerId);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -120,7 +122,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         {
             // Arrange
             TestDbContext.SeedDataToRentVehicle();
-            var repositoryInstance = new CustomerRepository(
+            var repositoryInstance = new CustomerCommandRepository(
                 _testDbContext!,
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
@@ -162,17 +164,19 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         {
             // Arrange
             TestDbContext.SeedDataToReturnRentedVehicle();
-            var repositoryInstance = new CustomerRepository(
+            var repositoryInstance = new CustomerCommandRepository(
                 _testDbContext!,
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
 
-            var rentedVehicle = await repositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
+
+            var rentedVehicle = await queryRepositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
                 BaseTestConstants.RentedVehicleIdToReturnTest,
                 BaseTestConstants.CustomerIdTest);
 
             // Act
-            var result = await repositoryInstance.ReturnRentedVehicle(rentedVehicle!.RentedVehicleId);
+            var result = await repositoryInstance.ReturnRentedVehicle(rentedVehicle!);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -192,13 +196,11 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         {
             // Arrange
             TestDbContext.SeedDataToGetRentedVehicleByIdAndCustomerId();
-            var repositoryInstance = new CustomerRepository(
-                _testDbContext!,
-                testRentedVehicleEntityFactory,
-                testCustomerEntityEntityFactory);
+
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
 
             // Act
-            var result = await repositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
+            var result = await queryRepositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
                 BaseTestConstants.RentedVehicleIdTest2,
                 BaseTestConstants.CustomerIdTest);
 
@@ -219,13 +221,11 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         {
             // Arrange
             TestDbContext.SeedDataToGetRentedVehicle();
-            var repositoryInstance = new CustomerRepository(
-                _testDbContext!,
-                testRentedVehicleEntityFactory,
-                testCustomerEntityEntityFactory);
+
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
 
             // Act
-            var result = await repositoryInstance.GetRentedVehicleByIdAsync(BaseTestConstants.RentedVehicleIdTest);
+            var result = await queryRepositoryInstance.GetRentedVehicleByIdAsync(BaseTestConstants.RentedVehicleIdTest);
 
             // Assert
             using (Assert.EnterMultipleScope())

@@ -27,13 +27,21 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Customer.CreateNe
             {
                 CustomerName = BaseTestConstants.CustomerNameTest
             };
-            CustomerRepositoryMock
+            CustomerCommandRepositoryMock
                 .Setup(x => x.AddNewCustomerAsync(It.IsAny<CustomerDto>()))
                 .ReturnsAsync(new CustomerDto
                 {
                     CustomerId = BaseTestConstants.CustomerIdTest,
                     CustomerName = BaseTestConstants.CustomerNameTest
                 });
+            CustomerQueryRepositoryMock
+                .Setup(x => x.GetCustomerByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new CustomerDto
+                {
+                    CustomerId = BaseTestConstants.CustomerIdTest,
+                    CustomerName = BaseTestConstants.CustomerNameTest
+                });
+
             var handler = new CreateNewCustomerHandler(CustomerServiceMock.Object, logger);
 
             // Act
