@@ -9,18 +9,18 @@ namespace MyCompany.Microservice.Services.Implementation
     /// <inheritdoc />
     public class FleetService : IFleetService
     {
-        private readonly IFleetRepository _fleetRepository;
+        private readonly IFleetCommandRepository _fleetRepository;
         private readonly IFleetQueryRepository _fleetQueryRepository;
         private readonly ILogger<FleetService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FleetService"/> class.
         /// </summary>
-        /// <param name="fleetRepository">Instance of <see cref="IFleetRepository"/>.</param>
+        /// <param name="fleetRepository">Instance of <see cref="IFleetCommandRepository"/>.</param>
         /// <param name="fleetQueryRepository">Instance of <see cref="IFleetQueryRepository"/>.</param>
         /// <param name="logger">Instance of <see cref="ILogger"/>.</param>
         public FleetService(
-            IFleetRepository fleetRepository,
+            IFleetCommandRepository fleetRepository,
             IFleetQueryRepository fleetQueryRepository,
             ILogger<FleetService> logger)
         {

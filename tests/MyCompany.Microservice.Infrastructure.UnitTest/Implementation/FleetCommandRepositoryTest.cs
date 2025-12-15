@@ -9,10 +9,10 @@ using MyCompany.Microservice.Infrastructure.Implementation;
 namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FleetRepositoryTest"/> class.
+    /// Initializes a new instance of the <see cref="FleetCommandRepositoryTest"/> class.
     /// </summary>
     [TestFixture]
-    public class FleetRepositoryTest
+    public class FleetCommandRepositoryTest
     {
         private readonly SqliteConnection _testDbConnection;
         private readonly FleetContext? _testDbContext;
@@ -20,9 +20,9 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         private readonly IVehicleEntityFactory _testVehicleEntityFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FleetRepositoryTest"/> class.
+        /// Initializes a new instance of the <see cref="FleetCommandRepositoryTest"/> class.
         /// </summary>
-        public FleetRepositoryTest()
+        public FleetCommandRepositoryTest()
         {
             _testDbConnection = TestDbContext.CreateSqliteTestConnection();
             _testDbContext = TestDbContext.CreateContext<FleetContext>(_testDbConnection);
@@ -58,7 +58,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task AddNewFleetTest()
         {
             // Arrange
-            var repositoryInstance = new FleetRepository(
+            var commandRepositoryInstance = new FleetCommandRepository(
                 _testDbContext!,
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
@@ -71,7 +71,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             };
 
             // Act
-            var result = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var result = await commandRepositoryInstance.AddNewFleetAsync(newFleetDto);
             var queryResult = await queryRepositoryInstance.GetFleetByIdAsync(result!.FleetId);
 
             // Assert
@@ -94,7 +94,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task AddNewVehicleTest()
         {
             // Arrange
-            var repositoryInstance = new FleetRepository(
+            var commandRepositoryInstance = new FleetCommandRepository(
                 _testDbContext!,
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
@@ -105,7 +105,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             {
                 FleetName = BaseTestConstants.FleetNameTest
             };
-            var persistedFleet = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var persistedFleet = await commandRepositoryInstance.AddNewFleetAsync(newFleetDto);
             var newVehicle = new VehicleDto()
             {
                 Brand = BaseTestConstants.BrandNameTest,
@@ -114,7 +114,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             };
 
             // Act
-            var result = await repositoryInstance.AddNewVehicleToFleetAsync(persistedFleet!.FleetId, newVehicle);
+            var result = await commandRepositoryInstance.AddNewVehicleToFleetAsync(persistedFleet!.FleetId, newVehicle);
             var queryResult = await queryRepositoryInstance.GetFleetByIdAsync(result!.FleetId);
 
             // Assert
@@ -141,7 +141,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task GetFleetByIdTest()
         {
             // Arrange
-            var repositoryInstance = new FleetRepository(
+            var commandRepositoryInstance = new FleetCommandRepository(
                 _testDbContext!,
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
@@ -153,7 +153,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 FleetName = BaseTestConstants.FleetNameTest
             };
 
-            var persistedFleet = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var persistedFleet = await commandRepositoryInstance.AddNewFleetAsync(newFleetDto);
 
             // Act
             var result = await queryRepositoryInstance.GetFleetByIdAsync(persistedFleet!.FleetId);
@@ -176,7 +176,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task GivenFleetWithNoVehiclesGetAvailableFleetVehiclesReturnsEmptyCollection()
         {
             // Arrange
-            var repositoryInstance = new FleetRepository(
+            var commandRepositoryInstance = new FleetCommandRepository(
                 _testDbContext!,
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
@@ -188,7 +188,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 FleetName = BaseTestConstants.FleetNameTest
             };
 
-            var persistedFleet = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var persistedFleet = await commandRepositoryInstance.AddNewFleetAsync(newFleetDto);
 
             // Act
             var result =
@@ -210,7 +210,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
         public async Task GivenFleetWithVehiclesGetAvailableFleetVehiclesReturnsNotEmptyCollection()
         {
             // Arrange
-            var repositoryInstance = new FleetRepository(
+            var commandRepositoryInstance = new FleetCommandRepository(
                 _testDbContext!,
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
@@ -221,14 +221,14 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             {
                 FleetName = BaseTestConstants.FleetNameTest
             };
-            var persistedFleet = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var persistedFleet = await commandRepositoryInstance.AddNewFleetAsync(newFleetDto);
             var newVehicle = new VehicleDto()
             {
                 Brand = BaseTestConstants.BrandNameTest,
                 Model = BaseTestConstants.ModelNameTest,
                 ManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
-            _ = await repositoryInstance.AddNewVehicleToFleetAsync(persistedFleet!.FleetId, newVehicle);
+            _ = await commandRepositoryInstance.AddNewVehicleToFleetAsync(persistedFleet!.FleetId, newVehicle);
 
             // Act
             var result =

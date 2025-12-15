@@ -29,7 +29,7 @@ namespace MyCompany.Microservice.Infrastructure.Extensions
                 return context.Database.GetDbConnection();
             });
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<IFleetRepository, FleetRepository>();
+            services.AddScoped<IFleetCommandRepository, FleetCommandRepository>();
             services.AddScoped<ICustomerQueryRepository, CustomerQueryRepository>();
             services.AddScoped<IFleetQueryRepository, FleetQueryRepository>();
 

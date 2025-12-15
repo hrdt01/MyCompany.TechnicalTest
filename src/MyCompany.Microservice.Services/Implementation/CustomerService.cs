@@ -10,26 +10,26 @@ namespace MyCompany.Microservice.Services.Implementation
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IFleetRepository _fleetRepository;
+        private readonly IFleetQueryRepository _fleetQueryRepository;
         private readonly ILogger<CustomerService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomerService"/> class.
         /// </summary>
         /// <param name="customerRepository">Instance of <see cref="ICustomerRepository"/>.</param>
-        /// <param name="fleetRepository">Instance of <see cref="IFleetRepository"/>.</param>
+        /// <param name="fleetQueryRepository">Instance of <see cref="IFleetCommandRepository"/>.</param>
         /// <param name="logger">Instance of <see cref="ILogger"/>.</param>
         public CustomerService(
             ICustomerRepository customerRepository,
-            IFleetRepository fleetRepository,
+            IFleetQueryRepository fleetQueryRepository,
             ILogger<CustomerService> logger)
         {
             ArgumentNullException.ThrowIfNull(customerRepository);
-            ArgumentNullException.ThrowIfNull(fleetRepository);
+            ArgumentNullException.ThrowIfNull(fleetQueryRepository);
             ArgumentNullException.ThrowIfNull(logger);
 
             _customerRepository = customerRepository;
-            _fleetRepository = fleetRepository;
+            _fleetQueryRepository = fleetQueryRepository;
             _logger = logger;
         }
 
@@ -38,7 +38,7 @@ namespace MyCompany.Microservice.Services.Implementation
         {
             ArgumentNullException.ThrowIfNull(source);
             var availableVehicles =
-                await _fleetRepository.GetAvailableFleetVehiclesAsync(source.FleetId);
+                await _fleetQueryRepository.GetAvailableFleetVehiclesAsync(source.FleetId);
             var activeRentedVehicles = await CustomerHasActiveRentedVehicles(source);
             var isAvailable = availableVehicles.Any(vehicle => vehicle.VehicleId == source.VehicleId);
             return !isAvailable || activeRentedVehicles

@@ -30,7 +30,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleManufacturedOn = BaseTestConstants.InvalidManufacturedOnTest,
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
-            FleetRepositoryMock
+            FleetQueryRepositoryMock
                 .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId))))
                 .ReturnsAsync(new FleetDto
                 {
@@ -92,7 +92,7 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest,
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
-            FleetRepositoryMock
+            FleetQueryRepositoryMock
                 .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid != Guid.NewGuid())))
                 .ReturnsAsync((FleetDto?)null);
 

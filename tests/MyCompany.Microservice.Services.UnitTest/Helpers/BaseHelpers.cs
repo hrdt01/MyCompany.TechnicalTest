@@ -14,14 +14,14 @@ namespace MyCompany.Microservice.Services.UnitTest.Helpers
         public BaseHelpers()
         {
             CustomerRepositoryMock = new Mock<ICustomerRepository>();
-            FleetRepositoryMock = new Mock<IFleetRepository>();
+            FleetCommandRepositoryMock = new Mock<IFleetCommandRepository>();
             FleetQueryRepositoryMock = new Mock<IFleetQueryRepository>();
         }
 
         /// <summary>
         /// Gets the mock instance.
         /// </summary>
-        public Mock<IFleetRepository> FleetRepositoryMock { get; }
+        public Mock<IFleetCommandRepository> FleetCommandRepositoryMock { get; }
 
         /// <summary>
         /// Gets the mock instance.

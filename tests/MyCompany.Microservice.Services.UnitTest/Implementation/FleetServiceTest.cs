@@ -21,14 +21,14 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {
                 FleetName = BaseTestConstants.FleetNameTest
             };
 
-            FleetRepositoryMock
+            FleetCommandRepositoryMock
                 .Setup(repo =>
                     repo.AddNewFleetAsync(It.Is<FleetDto>(it => it.FleetName == BaseTestConstants.FleetNameTest)))
                 .ReturnsAsync(fleetDto);
@@ -58,7 +58,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {
@@ -92,7 +92,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                     repo.GetFleetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(resultFleetDto);
 
-            FleetRepositoryMock
+            FleetCommandRepositoryMock
                 .Setup(repo =>
                     repo.AddNewVehicleToFleetAsync(It.IsAny<Guid>(), It.Is<VehicleDto>(it => it.VehicleId == BaseTestConstants.VehicleIdTest)))
                 .ReturnsAsync(resultFleetVehicleDto);
@@ -120,7 +120,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetCommandRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {

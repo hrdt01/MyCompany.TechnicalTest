@@ -3,9 +3,9 @@
 namespace MyCompany.Microservice.Infrastructure.Interfaces
 {
     /// <summary>
-    /// IFleetRepository definition.
+    /// IFleetCommandRepository definition.
     /// </summary>
-    public interface IFleetRepository
+    public interface IFleetCommandRepository
     {
         /// <summary>
         /// Add new vehicle to the collection of fleet's vehicles.
@@ -21,19 +21,5 @@ namespace MyCompany.Microservice.Infrastructure.Interfaces
         /// <param name="newFleet"><see cref="FleetDto"/> instance.</param>
         /// <returns>Instance of <see cref="FleetDto"/>.</returns>
         Task<FleetDto?> AddNewFleetAsync(FleetDto newFleet);
-
-        /// <summary>
-        /// Get all available <see cref="VehicleDto"/> in the fleet.
-        /// </summary>
-        /// <param name="fleetId">Fleet identifier.</param>
-        /// <returns>Collection of <see cref="VehicleDto"/>.</returns>
-        Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehiclesAsync(Guid fleetId);
-
-        /// <summary>
-        /// Get an instance of <see cref="FleetDto"/> by its identifier.
-        /// </summary>
-        /// <param name="fleetId">Fleet identifier.</param>
-        /// <returns>Instance of <see cref="FleetDto"/>.</returns>
-        Task<FleetDto?> GetFleetByIdAsync(Guid fleetId);
     }
 }

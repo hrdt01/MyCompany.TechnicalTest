@@ -22,7 +22,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var vehicleDto = new VehicleDto()
             {
@@ -53,7 +53,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 RentedVehicleId = BaseTestConstants.RentedVehicleIdTest
             };
 
-            FleetRepositoryMock
+            FleetQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetAvailableFleetVehiclesAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(availableVehiclesDto);
@@ -84,7 +84,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var vehicleDto = new VehicleDto()
             {
@@ -105,7 +105,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 EndRent = BaseTestConstants.RentFinishedOn
             };
 
-            FleetRepositoryMock
+            FleetQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetAvailableFleetVehiclesAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(availableVehiclesDto);
@@ -129,7 +129,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var customerDto = new CustomerDto()
             {
@@ -161,7 +161,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
@@ -218,7 +218,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
@@ -269,7 +269,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<CustomerService>();
-            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetRepositoryMock.Object, logger);
+            var serviceInstance = new CustomerService(CustomerRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var rentedVehicleDto = new RentedVehicleDto()
             {
