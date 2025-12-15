@@ -21,7 +21,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {
@@ -31,6 +31,11 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
             FleetRepositoryMock
                 .Setup(repo =>
                     repo.AddNewFleetAsync(It.Is<FleetDto>(it => it.FleetName == BaseTestConstants.FleetNameTest)))
+                .ReturnsAsync(fleetDto);
+
+            FleetQueryRepositoryMock
+                .Setup(repo =>
+                    repo.GetFleetByIdAsync(It.Is<Guid>(it => it == fleetDto.FleetId)))
                 .ReturnsAsync(fleetDto);
 
             // Act
@@ -53,7 +58,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {
@@ -69,10 +74,11 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 ManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
 
-            FleetRepositoryMock
-                .Setup(repo =>
-                    repo.GetFleetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(fleetDto);
+            var resultFleetVehicleDto = new FleetVehicleDto()
+            {
+                FleetId = BaseTestConstants.FleetIdTest,
+                VehicleId = BaseTestConstants.VehicleIdTest
+            };
 
             var resultFleetDto = new FleetDto()
             {
@@ -81,10 +87,15 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 Vehicles = new List<VehicleDto>().Append(vehicleDto)
             };
 
+            FleetQueryRepositoryMock
+                .Setup(repo =>
+                    repo.GetFleetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(resultFleetDto);
+
             FleetRepositoryMock
                 .Setup(repo =>
                     repo.AddNewVehicleToFleetAsync(It.IsAny<Guid>(), It.Is<VehicleDto>(it => it.VehicleId == BaseTestConstants.VehicleIdTest)))
-                .ReturnsAsync(resultFleetDto);
+                .ReturnsAsync(resultFleetVehicleDto);
 
             // Act
             var result = await serviceInstance.AddNewVehicle(fleetDto, vehicleDto);
@@ -109,7 +120,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
         {
             // Arrange
             var logger = new FakeLogger<FleetService>();
-            var serviceInstance = new FleetService(FleetRepositoryMock.Object, logger);
+            var serviceInstance = new FleetService(FleetRepositoryMock.Object, FleetQueryRepositoryMock.Object, logger);
 
             var fleetDto = new FleetDto()
             {
@@ -125,7 +136,7 @@ namespace MyCompany.Microservice.Services.UnitTest.Implementation
                 ManufacturedOn = BaseTestConstants.ManufacturedOnTest
             };
 
-            FleetRepositoryMock
+            FleetQueryRepositoryMock
                 .Setup(repo =>
                     repo.GetFleetByIdAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
                 .ReturnsAsync(fleetDto);

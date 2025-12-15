@@ -5,7 +5,6 @@ using Dapper;
 using Microsoft.EntityFrameworkCore;
 using MyCompany.Microservice.Domain.DbEntities;
 using MyCompany.Microservice.Domain.DTO;
-using MyCompany.Microservice.Domain.Interfaces;
 using MyCompany.Microservice.Infrastructure.Database;
 using MyCompany.Microservice.Infrastructure.Interfaces;
 using MyCompany.Microservice.Infrastructure.Mappers;
@@ -13,61 +12,20 @@ using MyCompany.Microservice.Infrastructure.Mappers;
 namespace MyCompany.Microservice.Infrastructure.Implementation
 {
     /// <inheritdoc />
-    public class FleetRepository : IFleetRepository
+    public class FleetQueryRepository : IFleetQueryRepository
     {
-        private readonly FleetContext _fleetContext;
-        private readonly IFleetEntityFactory _fleetEntityFactory;
-        private readonly IVehicleEntityFactory _vehicleEntityFactory;
         private readonly DbConnection _connection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FleetRepository"/> class.
+        /// Initializes a new instance of the <see cref="FleetQueryRepository"/> class.
         /// </summary>
         /// <param name="fleetContext">DB context.</param>
-        /// <param name="fleetEntityFactory">Instance of <see cref="IFleetEntityFactory"/>.</param>
-        /// <param name="vehicleEntityFactory">Instance of <see cref="IVehicleEntityFactory"/>.</param>
-        public FleetRepository(
-            FleetContext fleetContext,
-            IFleetEntityFactory fleetEntityFactory,
-            IVehicleEntityFactory vehicleEntityFactory)
+        public FleetQueryRepository(FleetContext fleetContext)
         {
             ArgumentNullException.ThrowIfNull(fleetContext);
-            ArgumentNullException.ThrowIfNull(fleetEntityFactory);
-            ArgumentNullException.ThrowIfNull(vehicleEntityFactory);
 
-            _fleetContext = fleetContext;
-            _fleetContext.Database.EnsureCreated();
-            _fleetEntityFactory = fleetEntityFactory;
-            _vehicleEntityFactory = vehicleEntityFactory;
-            _connection = _fleetContext.Database.GetDbConnection();
-        }
-
-        /// <inheritdoc />
-        public async Task<FleetVehicleDto?> AddNewVehicleToFleetAsync(Guid fleetId, VehicleDto sourceVehicle)
-        {
-            ArgumentNullException.ThrowIfNull(fleetId);
-            ArgumentNullException.ThrowIfNull(sourceVehicle);
-
-            var newVehicleDbInstance = sourceVehicle.ToDbEntity(_vehicleEntityFactory);
-            _ = await _fleetContext.Vehicles.AddAsync(newVehicleDbInstance);
-
-            var newFleetVehicle = new FleetVehicle { FleetId = fleetId, VehicleId = newVehicleDbInstance.VehicleId };
-            _ = await _fleetContext.FleetVehicles.AddAsync(newFleetVehicle);
-
-            var result = await _fleetContext.SaveChangesAsync();
-            return result > 0 ? newFleetVehicle.ToDtoFromDbEntity() : null;
-        }
-
-        /// <inheritdoc />
-        public async Task<FleetDto?> AddNewFleetAsync(FleetDto newFleet)
-        {
-            ArgumentNullException.ThrowIfNull(newFleet);
-
-            var fleetDbInstance = newFleet.ToDbEntity(_fleetEntityFactory);
-
-            await _fleetContext.Fleet.AddAsync(fleetDbInstance);
-            var result = await _fleetContext.SaveChangesAsync();
-            return result > 0 ? fleetDbInstance.FromDbEntityToDto() : null;
+            fleetContext.Database.EnsureCreated();
+            _connection = fleetContext.Database.GetDbConnection();
         }
 
         /// <inheritdoc />

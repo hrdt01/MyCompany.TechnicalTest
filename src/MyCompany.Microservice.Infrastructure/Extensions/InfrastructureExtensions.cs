@@ -30,6 +30,8 @@ namespace MyCompany.Microservice.Infrastructure.Extensions
             });
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IFleetRepository, FleetRepository>();
+            services.AddScoped<ICustomerQueryRepository, CustomerQueryRepository>();
+            services.AddScoped<IFleetQueryRepository, FleetQueryRepository>();
 
             services.AddSingleton<ICustomerEntityFactory, EntityFactory>();
             services.AddSingleton<IVehicleEntityFactory, EntityFactory>();

@@ -63,6 +63,8 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+
             var newFleetDto = new FleetDto
             {
                 FleetName = BaseTestConstants.FleetNameTest
@@ -70,13 +72,17 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 
             // Act
             var result = await repositoryInstance.AddNewFleetAsync(newFleetDto);
+            var queryResult = await queryRepositoryInstance.GetFleetByIdAsync(result!.FleetId);
 
             // Assert
             using (Assert.EnterMultipleScope())
             {
                 Assert.That(result!.FleetId, Is.Not.EqualTo(Guid.Empty));
                 Assert.That(result.FleetName, Is.EqualTo(newFleetDto.FleetName));
-                Assert.That(result.Vehicles, Is.Null);
+                Assert.That(result.Vehicles, Is.Empty);
+                Assert.That(queryResult!.FleetId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(queryResult.FleetName, Is.EqualTo(newFleetDto.FleetName));
+                Assert.That(queryResult.Vehicles, Is.Null);
             }
         }
 
@@ -93,6 +99,8 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+
             var newFleetDto = new FleetDto
             {
                 FleetName = BaseTestConstants.FleetNameTest
@@ -107,18 +115,21 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 
             // Act
             var result = await repositoryInstance.AddNewVehicleToFleetAsync(persistedFleet!.FleetId, newVehicle);
+            var queryResult = await queryRepositoryInstance.GetFleetByIdAsync(result!.FleetId);
 
             // Assert
             using (Assert.EnterMultipleScope())
             {
                 Assert.That(result!.FleetId, Is.Not.EqualTo(Guid.Empty));
                 Assert.That(result.FleetId, Is.EqualTo(persistedFleet.FleetId));
-                Assert.That(result.FleetName, Is.EqualTo(persistedFleet.FleetName));
-                Assert.That(result.Vehicles, Is.Not.Empty);
-                Assert.That(result.Vehicles!.First().VehicleId, Is.Not.EqualTo(Guid.Empty));
-                Assert.That(result.Vehicles!.First().Brand, Is.EqualTo(BaseTestConstants.BrandNameTest));
-                Assert.That(result.Vehicles!.First().Model, Is.EqualTo(BaseTestConstants.ModelNameTest));
-                Assert.That(result.Vehicles!.First().ManufacturedOn, Is.EqualTo(BaseTestConstants.ManufacturedOnTest));
+                Assert.That(queryResult!.FleetId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(queryResult.FleetId, Is.EqualTo(persistedFleet.FleetId));
+                Assert.That(queryResult.FleetName, Is.EqualTo(persistedFleet.FleetName));
+                Assert.That(queryResult.Vehicles, Is.Not.Empty);
+                Assert.That(queryResult.Vehicles!.First().VehicleId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(queryResult.Vehicles!.First().Brand, Is.EqualTo(BaseTestConstants.BrandNameTest));
+                Assert.That(queryResult.Vehicles!.First().Model, Is.EqualTo(BaseTestConstants.ModelNameTest));
+                Assert.That(queryResult.Vehicles!.First().ManufacturedOn, Is.EqualTo(BaseTestConstants.ManufacturedOnTest));
             }
         }
 
@@ -135,6 +146,8 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+
             var newFleetDto = new FleetDto
             {
                 FleetName = BaseTestConstants.FleetNameTest
@@ -143,7 +156,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             var persistedFleet = await repositoryInstance.AddNewFleetAsync(newFleetDto);
 
             // Act
-            var result = await repositoryInstance.GetFleetByIdAsync(persistedFleet!.FleetId);
+            var result = await queryRepositoryInstance.GetFleetByIdAsync(persistedFleet!.FleetId);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -168,6 +181,8 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+
             var newFleetDto = new FleetDto
             {
                 FleetName = BaseTestConstants.FleetNameTest
@@ -177,7 +192,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 
             // Act
             var result =
-                await repositoryInstance.GetAvailableFleetVehiclesAsync(persistedFleet!.FleetId);
+                await queryRepositoryInstance.GetAvailableFleetVehiclesAsync(persistedFleet!.FleetId);
 
             // Assert
             using (Assert.EnterMultipleScope())
@@ -200,6 +215,8 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+
             var newFleetDto = new FleetDto
             {
                 FleetName = BaseTestConstants.FleetNameTest
@@ -215,7 +232,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
 
             // Act
             var result =
-                await repositoryInstance.GetAvailableFleetVehiclesAsync(persistedFleet.FleetId);
+                await queryRepositoryInstance.GetAvailableFleetVehiclesAsync(persistedFleet.FleetId);
 
             // Assert
             using (Assert.EnterMultipleScope())

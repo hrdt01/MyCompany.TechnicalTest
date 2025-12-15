@@ -16,6 +16,41 @@ namespace MyCompany.Microservice.Infrastructure.Mappers
         /// </summary>
         /// <param name="source">Dto entity.</param>
         /// <returns>Db entity.</returns>
+        public static FleetVehicleDto ToDtoFromDbEntity(this FleetVehicle source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new FleetVehicleDto
+            {
+                FleetVehicleId = source.FleetVehicleId,
+                FleetId = source.FleetId,
+                VehicleId = source.VehicleId
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
+        public static FleetDto FromDbEntityToDto(this Domain.DbEntities.Fleet source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new FleetDto()
+            {
+                FleetId = source.FleetId,
+                FleetName = source.FleetName,
+                Vehicles = source.FleetVehicles.FromDbEntityToDto()
+            };
+            return result;
+        }
+
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
         public static VehicleDto FromDbEntityToDto(this FleetVehicle source)
         {
             ArgumentNullException.ThrowIfNull(source);
