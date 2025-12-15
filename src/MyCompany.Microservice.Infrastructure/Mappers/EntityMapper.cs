@@ -3,6 +3,7 @@ using MyCompany.Microservice.Domain.DTO;
 using MyCompany.Microservice.Domain.Entities;
 using MyCompany.Microservice.Domain.Entities.ValueObjects;
 using MyCompany.Microservice.Domain.Interfaces;
+using Customer = MyCompany.Microservice.Domain.DbEntities.Customer;
 
 namespace MyCompany.Microservice.Infrastructure.Mappers
 {
@@ -11,6 +12,58 @@ namespace MyCompany.Microservice.Infrastructure.Mappers
     /// </summary>
     public static class EntityMapper
     {
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
+        public static FleetVehicleDto ToDtoFromDbEntity(this FleetVehicle source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new FleetVehicleDto
+            {
+                FleetVehicleId = source.FleetVehicleId,
+                FleetId = source.FleetId,
+                VehicleId = source.VehicleId
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
+        public static CustomerDto ToDtoFromDbEntity(this Customer source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new CustomerDto
+            {
+                CustomerId = source.CustomerId,
+                CustomerName = source.CustomerName
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
+        public static FleetDto FromDbEntityToDto(this Domain.DbEntities.Fleet source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new FleetDto()
+            {
+                FleetId = source.FleetId,
+                FleetName = source.FleetName,
+                Vehicles = source.FleetVehicles.FromDbEntityToDto()
+            };
+            return result;
+        }
+
         /// <summary>
         /// Db entity Mapper.
         /// </summary>
@@ -25,6 +78,27 @@ namespace MyCompany.Microservice.Infrastructure.Mappers
                 Model = source.Vehicle?.Model!,
                 ManufacturedOn = source.Vehicle!.ManufacturedOn,
                 VehicleId = source.VehicleId
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// Db entity Mapper.
+        /// </summary>
+        /// <param name="source">Dto entity.</param>
+        /// <returns>Db entity.</returns>
+        public static RentedVehicleDto FromDbEntityToDto(this Domain.DbEntities.RentedVehicle source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            var result = new RentedVehicleDto
+            {
+                RentedVehicleId = source.RentedVehicleId,
+                FleetId = source.FleetId,
+                CustomerId = source.CustomerId,
+                VehicleId = source.VehicleId,
+                StartRent = source.RentStartedOn,
+                EndRent = source.RentFinishedOn
             };
 
             return result;
@@ -150,9 +224,7 @@ namespace MyCompany.Microservice.Infrastructure.Mappers
         /// <param name="source">IFleet entity.</param>
         /// <param name="entityFactoryInstance">Instance of <see cref="ICustomerEntityFactory"/>.</param>
         /// <returns>Db entity.</returns>
-        public static Domain.DbEntities.Customer ToDbEntity(
-            this CustomerDto source,
-            ICustomerEntityFactory entityFactoryInstance)
+        public static Customer ToDbEntity(this CustomerDto source, ICustomerEntityFactory entityFactoryInstance)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(entityFactoryInstance);
@@ -160,7 +232,7 @@ namespace MyCompany.Microservice.Infrastructure.Mappers
             var domainEntity =
                 entityFactoryInstance.NewCustomer(new CustomerName(source.CustomerName!));
 
-            var result = new Domain.DbEntities.Customer
+            var result = new Customer
             {
                 CustomerId = Guid.Parse(((CustomerEntity)domainEntity).Id.ToString()),
                 CustomerName = ((CustomerEntity)domainEntity).CustomerName.ToString()

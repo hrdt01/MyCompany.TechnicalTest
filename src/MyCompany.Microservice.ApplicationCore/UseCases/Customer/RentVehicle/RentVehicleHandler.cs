@@ -48,7 +48,7 @@ namespace MyCompany.Microservice.Application.UseCases.Customer.RentVehicle
                     EndRent = request.EndRent
                 };
 
-                var response = await _customerService.RentVehicle(sourceRentedVehicle);
+                var response = await _customerService.RentVehicleAsync(sourceRentedVehicle);
                 var returnedResponse = new RentVehicleResponse { RentedVehicle = response };
                 return returnedResponse;
             }

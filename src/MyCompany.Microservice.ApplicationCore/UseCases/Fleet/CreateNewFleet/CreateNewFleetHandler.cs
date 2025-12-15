@@ -36,7 +36,7 @@ namespace MyCompany.Microservice.Application.UseCases.Fleet.CreateNewFleet
                 request.FleetName);
             try
             {
-                var response = await _fleetService.AddNewFleet(request.FleetName);
+                var response = await _fleetService.AddNewFleetAsync(request.FleetName);
                 var returnedResponse = new CreateNewFleetResponse { Fleet = response };
                 return returnedResponse;
             }

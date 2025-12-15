@@ -39,7 +39,7 @@ namespace MyCompany.Microservice.Application.UseCases.Fleet.GetAvailableVehicles
             try
             {
                 var fleetDto = new FleetDto { FleetId = Guid.Parse(request.FleetId) };
-                var response = await _fleetService.GetAvailableFleetVehicles(fleetDto);
+                var response = await _fleetService.GetAvailableFleetVehiclesAsync(fleetDto);
                 var returnedResponse = new GetAvailableVehiclesInFleetResponse { Vehicles = response };
                 return returnedResponse;
             }

@@ -46,7 +46,7 @@ namespace MyCompany.Microservice.Application.UseCases.Fleet.AddNewVehicleToFleet
                     Model = request.VehicleModel,
                     ManufacturedOn = request.VehicleManufacturedOn
                 };
-                var response = await _fleetService.AddNewVehicle(sourceFleet, sourceVehicle);
+                var response = await _fleetService.AddNewVehicleAsync(sourceFleet, sourceVehicle);
                 var returnedResponse = new AddNewVehicleToFleetResponse { Fleet = response };
                 return returnedResponse;
             }

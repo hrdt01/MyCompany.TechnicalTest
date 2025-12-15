@@ -27,13 +27,23 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.CreateNewFl
             {
                 FleetName = BaseTestConstants.FleetNameTest
             };
-            FleetRepositoryMock
-                .Setup(x => x.AddNewFleet(It.IsAny<FleetDto>()))
+
+            FleetCommandRepositoryMock
+                .Setup(x => x.AddNewFleetAsync(It.IsAny<FleetDto>()))
                 .ReturnsAsync(new FleetDto
                 {
                     FleetId = BaseTestConstants.FleetIdTest,
                     FleetName = BaseTestConstants.FleetNameTest
                 });
+
+            FleetQueryRepositoryMock
+                .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(it => it == BaseTestConstants.FleetIdTest)))
+                .ReturnsAsync(new FleetDto
+                {
+                    FleetId = BaseTestConstants.FleetIdTest,
+                    FleetName = BaseTestConstants.FleetNameTest
+                });
+
             var handler = new CreateNewFleetHandler(FleetServiceMock.Object, logger);
 
             // Act

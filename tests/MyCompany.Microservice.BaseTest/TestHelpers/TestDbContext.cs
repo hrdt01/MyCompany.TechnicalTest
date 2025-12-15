@@ -69,6 +69,15 @@ namespace MyCompany.Microservice.BaseTest.TestHelpers
                 testDbContext.Vehicles.Where(vehicle => vehicle.VehicleId == BaseTestConstants.VehicleIdTest));
             testDbContext.Fleet.RemoveRange(
                 testDbContext.Fleet.Where(fleet => fleet.FleetName == BaseTestConstants.FleetNameTest));
+            foreach (var rentedVehicle in testDbContext.RentedVehicles)
+            {
+                testDbContext.RentedVehicles.Remove(rentedVehicle);
+            }
+
+            foreach (var vehicle in testDbContext.Vehicles)
+            {
+                testDbContext.Vehicles.Remove(vehicle);
+            }
 
             testDbContext.SaveChanges();
         }

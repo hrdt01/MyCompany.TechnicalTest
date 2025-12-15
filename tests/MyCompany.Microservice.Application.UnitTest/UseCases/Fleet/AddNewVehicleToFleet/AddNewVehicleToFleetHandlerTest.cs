@@ -30,18 +30,8 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleManufacturedOn = BaseTestConstants.InvalidManufacturedOnTest,
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
-            FleetRepositoryMock
-                .Setup(x => x.GetFleetById(It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId))))
-                .ReturnsAsync(new FleetDto
-                {
-                    FleetId = BaseTestConstants.FleetIdTest,
-                    FleetName = BaseTestConstants.FleetNameTest
-                });
-
-            FleetRepositoryMock
-                .Setup(x => x.AddNewVehicle(
-                    It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId)),
-                    It.IsAny<VehicleDto>()))
+            FleetQueryRepositoryMock
+                .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId))))
                 .ReturnsAsync(new FleetDto
                 {
                     FleetId = BaseTestConstants.FleetIdTest,
@@ -54,6 +44,17 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                             ManufacturedOn = BaseTestConstants.ManufacturedOnTest
                         })
                 });
+
+            FleetCommandRepositoryMock
+                .Setup(x => x.AddNewVehicleToFleetAsync(
+                    It.Is<Guid>(guid => guid == Guid.Parse(request.FleetId)),
+                    It.IsAny<VehicleDto>()))
+                .ReturnsAsync(new FleetVehicleDto()
+                {
+                    FleetId = BaseTestConstants.FleetIdTest,
+                    VehicleId = BaseTestConstants.VehicleIdTest
+                });
+
             var handler = new AddNewVehicleToFleetHandler(FleetServiceMock.Object, logger);
 
             // Act
@@ -92,8 +93,8 @@ namespace MyCompany.Microservice.Application.UnitTest.UseCases.Fleet.AddNewVehic
                 VehicleManufacturedOn = BaseTestConstants.ManufacturedOnTest,
                 VehicleModel = BaseTestConstants.ModelNameTest
             };
-            FleetRepositoryMock
-                .Setup(x => x.GetFleetById(It.Is<Guid>(guid => guid != Guid.NewGuid())))
+            FleetQueryRepositoryMock
+                .Setup(x => x.GetFleetByIdAsync(It.Is<Guid>(guid => guid != Guid.NewGuid())))
                 .ReturnsAsync((FleetDto?)null);
 
             var handler = new AddNewVehicleToFleetHandler(FleetServiceMock.Object, logger);

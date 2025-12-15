@@ -45,7 +45,7 @@ namespace MyCompany.Microservice.Application.UseCases.Customer.ReturnRentedVehic
                     CustomerId = Guid.Parse(request.CustomerId)
                 };
 
-                var response = await _customerService.ReturnRentedVehicle(sourceRentedVehicle);
+                var response = await _customerService.ReturnRentedVehicleAsync(sourceRentedVehicle);
                 var returnedResponse = new ReturnRentedVehicleResponse { RentedVehicle = response };
                 return returnedResponse;
             }

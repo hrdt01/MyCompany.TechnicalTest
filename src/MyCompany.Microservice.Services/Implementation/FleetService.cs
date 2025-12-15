@@ -9,60 +9,69 @@ namespace MyCompany.Microservice.Services.Implementation
     /// <inheritdoc />
     public class FleetService : IFleetService
     {
-        private readonly IFleetRepository _fleetRepository;
+        private readonly IFleetCommandRepository _fleetRepository;
+        private readonly IFleetQueryRepository _fleetQueryRepository;
         private readonly ILogger<FleetService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FleetService"/> class.
         /// </summary>
-        /// <param name="fleetRepository">Instance of <see cref="IFleetRepository"/>.</param>
+        /// <param name="fleetRepository">Instance of <see cref="IFleetCommandRepository"/>.</param>
+        /// <param name="fleetQueryRepository">Instance of <see cref="IFleetQueryRepository"/>.</param>
         /// <param name="logger">Instance of <see cref="ILogger"/>.</param>
         public FleetService(
-            IFleetRepository fleetRepository,
+            IFleetCommandRepository fleetRepository,
+            IFleetQueryRepository fleetQueryRepository,
             ILogger<FleetService> logger)
         {
             ArgumentNullException.ThrowIfNull(fleetRepository);
+            ArgumentNullException.ThrowIfNull(fleetQueryRepository);
             ArgumentNullException.ThrowIfNull(logger);
 
             _fleetRepository = fleetRepository;
+            _fleetQueryRepository = fleetQueryRepository;
             _logger = logger;
         }
 
         /// <inheritdoc />
-        public async Task<FleetDto?> AddNewFleet(string newFleetName)
+        public async Task<FleetDto?> AddNewFleetAsync(string newFleetName)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(newFleetName);
 
             var fleetDto = new FleetDto { FleetName = newFleetName };
 
-            return await _fleetRepository.AddNewFleet(fleetDto);
+            var result = await _fleetRepository.AddNewFleetAsync(fleetDto);
+
+            return result != null ? await _fleetQueryRepository.GetFleetByIdAsync(result.FleetId) : null;
         }
 
         /// <inheritdoc />
-        public async Task<FleetDto?> AddNewVehicle(FleetDto sourceFleet, VehicleDto sourceVehicle)
+        public async Task<FleetDto?> AddNewVehicleAsync(FleetDto sourceFleet, VehicleDto sourceVehicle)
         {
             ArgumentNullException.ThrowIfNull(sourceFleet);
             ArgumentNullException.ThrowIfNull(sourceVehicle);
 
-            var existingFleet = await _fleetRepository.GetFleetById(sourceFleet.FleetId);
+            var existingFleet = await _fleetQueryRepository.GetFleetByIdAsync(sourceFleet.FleetId);
             if (existingFleet == null)
             {
                 _logger.LogWarningNotFoundFleet(
-                    $"{nameof(FleetService)} - {nameof(AddNewVehicle)} - ",
+                    $"{nameof(FleetService)} - {nameof(AddNewVehicleAsync)} - ",
                     sourceFleet.FleetId.ToString());
 
                 ArgumentNullException.ThrowIfNull(existingFleet);
             }
 
-            return await _fleetRepository.AddNewVehicle(existingFleet.FleetId, sourceVehicle);
+            var result = await _fleetRepository.AddNewVehicleToFleetAsync(existingFleet.FleetId, sourceVehicle);
+
+            return result != null ? await _fleetQueryRepository.GetFleetByIdAsync(result.FleetId) : null;
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehicles(FleetDto sourceFleet)
+        public async Task<IReadOnlyCollection<VehicleDto>> GetAvailableFleetVehiclesAsync(FleetDto sourceFleet)
         {
             ArgumentNullException.ThrowIfNull(sourceFleet);
 
-            return await _fleetRepository.GetAvailableFleetVehicles(sourceFleet.FleetId);
+            return await _fleetQueryRepository.GetAvailableFleetVehiclesAsync(sourceFleet.FleetId);
         }
     }
 }
