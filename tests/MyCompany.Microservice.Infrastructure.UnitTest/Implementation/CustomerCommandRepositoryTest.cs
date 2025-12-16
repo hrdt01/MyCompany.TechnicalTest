@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using MyCompany.Microservice.BaseTest.TestHelpers;
 using MyCompany.Microservice.Domain.DTO;
 using MyCompany.Microservice.Domain.Interfaces;
@@ -93,7 +94,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
 
-            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newCustomerDto = new CustomerDto
             {
@@ -169,7 +170,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 testRentedVehicleEntityFactory,
                 testCustomerEntityEntityFactory);
 
-            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var rentedVehicle = await queryRepositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
                 BaseTestConstants.RentedVehicleIdToReturnTest,
@@ -197,7 +198,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             // Arrange
             TestDbContext.SeedDataToGetRentedVehicleByIdAndCustomerId();
 
-            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             // Act
             var result = await queryRepositoryInstance.GetRentedVehicleByIdAndCustomerIdAsync(
@@ -222,7 +223,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
             // Arrange
             TestDbContext.SeedDataToGetRentedVehicle();
 
-            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new CustomerQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             // Act
             var result = await queryRepositoryInstance.GetRentedVehicleByIdAsync(BaseTestConstants.RentedVehicleIdTest);

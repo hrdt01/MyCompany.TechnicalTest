@@ -1,11 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data.Common;
+using System.Data;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
 using MyCompany.Microservice.Domain.DbEntities;
 using MyCompany.Microservice.Domain.DTO;
-using MyCompany.Microservice.Infrastructure.Database;
 using MyCompany.Microservice.Infrastructure.Interfaces;
 using MyCompany.Microservice.Infrastructure.Mappers;
 
@@ -14,18 +12,17 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
     /// <inheritdoc />
     public class FleetQueryRepository : IFleetQueryRepository
     {
-        private readonly DbConnection _connection;
+        private readonly IDbConnection _connection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FleetQueryRepository"/> class.
         /// </summary>
-        /// <param name="fleetContext">DB context.</param>
-        public FleetQueryRepository(FleetContext fleetContext)
+        /// <param name="connection">Database connection.</param>
+        public FleetQueryRepository(IDbConnection connection)
         {
-            ArgumentNullException.ThrowIfNull(fleetContext);
+            ArgumentNullException.ThrowIfNull(connection);
 
-            fleetContext.Database.EnsureCreated();
-            _connection = fleetContext.Database.GetDbConnection();
+            _connection = connection;
         }
 
         /// <inheritdoc />

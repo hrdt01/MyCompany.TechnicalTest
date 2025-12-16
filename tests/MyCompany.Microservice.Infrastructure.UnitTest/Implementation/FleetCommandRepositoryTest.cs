@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using MyCompany.Microservice.BaseTest.TestHelpers;
 using MyCompany.Microservice.Domain.DTO;
 using MyCompany.Microservice.Domain.Interfaces;
@@ -63,7 +64,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
-            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newFleetDto = new FleetDto
             {
@@ -99,7 +100,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
-            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newFleetDto = new FleetDto
             {
@@ -146,7 +147,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
-            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newFleetDto = new FleetDto
             {
@@ -181,7 +182,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
-            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newFleetDto = new FleetDto
             {
@@ -215,7 +216,7 @@ namespace MyCompany.Microservice.Infrastructure.UnitTest.Implementation
                 _testFleetEntityFactory,
                 _testVehicleEntityFactory);
 
-            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!);
+            var queryRepositoryInstance = new FleetQueryRepository(_testDbContext!.Database.GetDbConnection());
 
             var newFleetDto = new FleetDto
             {
