@@ -1,9 +1,7 @@
-﻿using System.Data.Common;
+﻿using System.Data;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
 using MyCompany.Microservice.Domain.DbEntities;
 using MyCompany.Microservice.Domain.DTO;
-using MyCompany.Microservice.Infrastructure.Database;
 using MyCompany.Microservice.Infrastructure.Interfaces;
 
 namespace MyCompany.Microservice.Infrastructure.Implementation
@@ -11,18 +9,17 @@ namespace MyCompany.Microservice.Infrastructure.Implementation
     /// <inheritdoc />
     public class CustomerQueryRepository : ICustomerQueryRepository
     {
-        private readonly DbConnection _connection;
+        private readonly IDbConnection _connection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomerQueryRepository"/> class.
         /// </summary>
-        /// <param name="fleetContext">DB context.</param>
-        public CustomerQueryRepository(FleetContext fleetContext)
+        /// <param name="connection">Database connection.</param>
+        public CustomerQueryRepository(IDbConnection connection)
         {
-            ArgumentNullException.ThrowIfNull(fleetContext);
+            ArgumentNullException.ThrowIfNull(connection);
 
-            fleetContext.Database.EnsureCreated();
-            _connection = fleetContext.Database.GetDbConnection();
+            _connection = connection;
         }
 
         /// <inheritdoc />

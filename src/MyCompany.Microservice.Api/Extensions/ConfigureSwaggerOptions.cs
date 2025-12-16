@@ -42,12 +42,12 @@ namespace MyCompany.Microservice.Api.Extensions
         public void Configure(SwaggerGenOptions options)
         {
             var xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
-            var deviceApiDescription = "GTMotive";
+            var deviceApiDescription = "MyCompany.Microservice.Api";
             foreach (var description in _provider.ApiVersionDescriptions)
             {
                 options.SwaggerDoc(description.GroupName, new OpenApiInfo
                 {
-                    Title = "GTMotive.Test.HectorRomero",
+                    Title = "TechnicalTest.HectorRomero",
                     Version = description.ApiVersion.ToString(),
                     Description = deviceApiDescription
                 });
